@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bank.Application</name>
+    </assembly>
+    <members>
+        <member name="M:Bank.Application.Accounts.BankAccountCommandHandler.Handle(Bank.Application.Accounts.Commands.CreateBankAccountCommand,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик команды открытия расчетного счета.
+            </summary>
+        </member>
+        <member name="M:Bank.Application.Accounts.BankAccountCommandHandler.Handle(Bank.Application.Accounts.Commands.PerformDepositeCommand,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик команды начисления депозитных процентов.
+            </summary>
+        </member>
+        <member name="M:Bank.Application.Accounts.BankAccountCommandHandler.Handle(Bank.Application.Accounts.Commands.ChangeOwnerCommand,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик команды переоформления счета на другого пользователя.
+            </summary>
+        </member>
+        <member name="M:Bank.Application.Accounts.BankAccountCommandHandler.Handle(Bank.Application.Accounts.Commands.PerformWithdrawalCommand,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик команды списания с расчетного счета.
+            </summary>
+        </member>
+        <member name="M:Bank.Application.Accounts.BankAccountCommandHandler.Handle(Bank.Application.Accounts.Commands.RebuildAccountsViewsCommand,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик команды пересборки материализованных представлений.
+            </summary>
+        </member>
+        <member name="M:Bank.Application.Accounts.BankAccountQueryHandler.Handle(Bank.Application.Accounts.Queries.GetBankAccountsQuery,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик запроса списка доступных расчетных счетов.
+            </summary>
+        </member>
+        <member name="M:Bank.Application.Accounts.BankAccountQueryHandler.Handle(Bank.Application.Accounts.Queries.GetBankAccountShortInfoQuery,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик запроса краткой информацию по расчетному счету.
+            </summary>
+        </member>
+        <member name="M:Bank.Application.Accounts.BankAccountQueryHandler.Handle(Bank.Application.Accounts.Queries.GetBankAccountDetailsQuery,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик запроса детализации по расчетному счету.
+            </summary>
+        </member>
+        <member name="T:Bank.Application.Accounts.Commands.ChangeOwnerCommand">
+            <summary>
+            Команда переоформления счета на другого пользователя.
+            </summary>
+        </member>
+        <member name="P:Bank.Application.Accounts.Commands.ChangeOwnerCommand.AccountId">
+            <summary>
+            Идентификатор расчетного счета.
+            </summary>
+        </member>
+        <member name="P:Bank.Application.Accounts.Commands.ChangeOwnerCommand.NewOwner">
+            <summary>
+            Имя нового владельца.
+            </summary>
+        </member>
+        <member name="T:Bank.Application.Accounts.Commands.CreateBankAccountCommand">
+            <summary>
+            Команда открытия расчетного счета.
+            </summary>
+        </member>
+        <member name="P:Bank.Application.Accounts.Commands.CreateBankAccountCommand.Owner">
+            <summary>
+            Имя владельца.
+            </summary>
+        </member>
+        <member name="T:Bank.Application.Accounts.Commands.PerformDepositeCommand">
+            <summary>
+            Команда начисления депозитных процентов.
+            </summary>
+        </member>
+        <member name="P:Bank.Application.Accounts.Commands.PerformDepositeCommand.AccountId">
+            <summary>
+            Идентификатор расчетного счета.
+            </summary>
+        </member>
+        <member name="P:Bank.Application.Accounts.Commands.PerformDepositeCommand.Sum">
+            <summary>
+            Сумма проводки.
+            </summary>
+        </member>
+        <member name="T:Bank.Application.Accounts.Commands.PerformWithdrawalCommand">
+            <summary>
+            Команда списания с расчетного счета.
+            </summary>
+        </member>
+        <member name="P:Bank.Application.Accounts.Commands.PerformWithdrawalCommand.AccountId">
+            <summary>
+            Идентификатор расчетного счета.
+            </summary>
+        </member>
+        <member name="P:Bank.Application.Accounts.Commands.PerformWithdrawalCommand.Sum">
+            <summary>
+            Сумма списания.
+            </summary>
+        </member>
+        <member name="T:Bank.Application.Accounts.Commands.RebuildAccountsViewsCommand">
+            <summary>
+            Команда пересобирает материализованные представления.
+            </summary>
+        </member>
+        <member name="T:Bank.Application.Accounts.Queries.GetBankAccountDetailsQuery">
+            <summary>
+            Запрос детализации по расчетному счету.
+            </summary>
+        </member>
+        <member name="P:Bank.Application.Accounts.Queries.GetBankAccountDetailsQuery.AccountId">
+            <summary>
+            Идентификатор расчетного счета.
+            </summary>
+        </member>
+        <member name="T:Bank.Application.Accounts.Queries.GetBankAccountShortInfoQuery">
+            <summary>
+            Запрос краткой информацию по расчетному счету.
+            </summary>
+        </member>
+        <member name="P:Bank.Application.Accounts.Queries.GetBankAccountShortInfoQuery.AccountId">
+            <summary>
+            Идентификатор расчетного счета.
+            </summary>
+        </member>
+        <member name="T:Bank.Application.Accounts.Queries.GetBankAccountsQuery">
+            <summary>
+            Запрос списка доступных расчетных счетов.
+            </summary>
+        </member>
+    </members>
+</doc>
