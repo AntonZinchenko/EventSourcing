@@ -34,6 +34,7 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip
             During(InFlowWaiting,
                   When(InflowPerformedEvent)
                      .Then(x => logger.LogInformation($"Выполнено успешное зачисление денежных средств в размере {x.Instance.Sum} на счет {x.Instance.TargetAccountId}."))
+                     .Then(x => x.Instance.Comment = "Transaction completed successfully.")
                      .TransitionTo(Completed)
                      .Finalize());
 
@@ -41,8 +42,8 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip
                   When(OperationFaultedEvent)
                      .Then(x => logger.LogInformation($"Перевод денежных средств со счета {x.Instance.SourceAccountId} на счет {x.Instance.TargetAccountId} закончился неудачей! Причина: [{DateTime.Now}] {x.Data.Reason}."))
                      .ThenAsync(NotifyMonitoringService)
-                     .TransitionTo(Faulted)
-                     .Finalize());
+                     .Then(x => x.Instance.Comment = x.Data.Reason)
+                     .TransitionTo(Faulted));
         }
 
         /// <summary>

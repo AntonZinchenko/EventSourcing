@@ -29,5 +29,10 @@ namespace Bank.Orchestrators.Transfer
         /// Сумма перевода.
         /// </summary>
         public decimal Sum { get; set; }
+
+        /// <summary>
+        /// Комментарий.
+        /// </summary>
+        public string Comment { get; set; }
     }
 }

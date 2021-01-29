@@ -8,12 +8,14 @@ using MassTransit.Saga;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SeedWorks.Core.Events;
 using System;
 using GreenPipes;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using MassTransit.EntityFrameworkCoreIntegration;
+using Microsoft.EntityFrameworkCore;
+using Bank.Orchestrators.Transfer.StatePersistence;
 
 namespace Bank.Orchestrators
 {
@@ -27,11 +29,23 @@ namespace Bank.Orchestrators
                 x.SetKebabCaseEndpointNameFormatter();
                 x.AddSagaStateMachine<TransferStateMachine, TransferState>(sagaConfig =>
                 {
-                    sagaConfig.UseMessageRetry(r => r.Immediate(5));
+                    // sagaConfig.UseMessageRetry(r => r.Immediate(5));
                     sagaConfig.UseInMemoryOutbox();
                 })
-                .InMemoryRepository();
-                 
+                //.InMemoryRepository();
+                .EntityFrameworkRepository(r =>
+                {
+                    r.ConcurrencyMode = ConcurrencyMode.Pessimistic;
+
+                    r.AddDbContext<DbContext, TransferDbContext>((provider, optionsBuilder) =>
+                    {
+                        optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+                    });
+
+                    r.LockStatementProvider =
+                        new CustomSqlLockStatementProvider("select * from {0}.{1} WITH (UPDLOCK, ROWLOCK) WHERE TransferId = @p0");
+                });
+
                 x.AddActivity(typeof(ProcessOutflowActivity));
                 x.AddActivity(typeof(ProcessInflowActivity));
 

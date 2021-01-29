@@ -17,7 +17,7 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip
 
             // Операция списания денежных средств
             builder.AddActivity(
-                typeof(ProcessOutflowActivity).Name,
+                nameof(ProcessOutflowActivity),
                 new Uri("queue:process-outflow_execute"),
                 new
                 {
@@ -28,7 +28,7 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip
             
             // Операция зачисления денежных средств
             builder.AddActivity(
-                typeof(ProcessInflowActivity).Name,
+                nameof(ProcessInflowActivity),
                 new Uri("queue:process-inflow_execute"),
                 new
                 {
