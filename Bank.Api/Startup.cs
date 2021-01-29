@@ -14,6 +14,7 @@ using Bank.Api.Validation;
 using SeedWorks.Validation;
 using Bank.Storage;
 using Microsoft.AspNetCore.Http;
+using Bank.Orchestrators;
 
 namespace Bank.Api
 {
@@ -51,6 +52,7 @@ namespace Bank.Api
 
             services.AddCoreServices();
             services.AddBankAccountManagement(Configuration);
+            services.ConfigOrchestrators(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

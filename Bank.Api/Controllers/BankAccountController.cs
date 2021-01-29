@@ -15,10 +15,14 @@ namespace Bank.Api.Controllers
     public class BankAccountController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IExecutionContextAccessor _contextAccessor;
 
-        public BankAccountController(IMediator mediator)
+        public BankAccountController(
+            IMediator mediator,
+            IExecutionContextAccessor contextAccessor)
         {
             _mediator = mediator;
+            _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
         }
 
         /// <summary>
@@ -54,7 +58,7 @@ namespace Bank.Api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Post([FromBody] CreateBankAccountRequest request)
-            => (await _mediator.Send(new CreateBankAccountCommand(request.Owner)))
+            => (await _mediator.Send(new CreateBankAccountCommand(request.Owner, _contextAccessor.CorrelationId)))
                 .PipeTo(accountId => Created("api/BankAccount/info", accountId));
 
         /// <summary>
@@ -65,7 +69,7 @@ namespace Bank.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPatch("{id}/renameOwner")]
         public async Task<IActionResult> ChangeOwner(Guid id, [FromBody] ChangeOwnerRequest request)
-            => (await _mediator.Send(new ChangeOwnerCommand(id, request.NewOwner)))
+            => (await _mediator.Send(new ChangeOwnerCommand(id, request.NewOwner, _contextAccessor.CorrelationId)))
                 .PipeTo(_ => new OkResult());
 
         /// <summary>
@@ -76,7 +80,7 @@ namespace Bank.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPatch("{id}/performDeposite")]
         public async Task<IActionResult> PerformDeposite(Guid id, [FromBody] PerformDepositeRequest request)
-            => (await _mediator.Send(new PerformDepositeCommand(id, request.Sum)))
+            => (await _mediator.Send(new PerformDepositeCommand(id, request.Sum, _contextAccessor.CorrelationId)))
                 .PipeTo(_ => new OkResult());
 
         /// <summary>
@@ -87,7 +91,7 @@ namespace Bank.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPatch("{id}/performWithdrawal")]
         public async Task<IActionResult> PerformWithdrawal(Guid id, [FromBody] PerformWithdrawalRequest request)
-            => (await _mediator.Send(new PerformWithdrawalCommand(id, request.Sum)))
+            => (await _mediator.Send(new PerformWithdrawalCommand(id, request.Sum, _contextAccessor.CorrelationId)))
                 .PipeTo(_ => new OkResult());
 
         /// <summary>
@@ -97,5 +101,10 @@ namespace Bank.Api.Controllers
         public async Task<IActionResult> RebuildViews()
             => (await _mediator.Send(new RebuildAccountsViewsCommand()))
                 .PipeTo(_ => NoContent());
+
+        [HttpPatch("{id}/transferTo")]
+        public async Task<IActionResult> TransferBetweenAccountsCommand(Guid id, [FromBody] TransferRequest request)
+            => (await _mediator.Send(new TransferBetweenAccountsCommand(id, request.TargetAccountId, request.Sum, _contextAccessor.CorrelationId)))
+                .PipeTo(_ => new OkResult());
     }
 }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Bank.Orchestrators.Contracts;
+using Newtonsoft.Json;
 using SeedWorks.Core.Events;
 using System;
 
@@ -7,32 +8,21 @@ namespace Bank.DomainModel.Accounts.Events
     /// <summary>
     /// Событие выполнения списание с расчетного счета.
     /// </summary>
-    public class WithdrawalPerformed : IEvent
+    public class WithdrawalPerformed : BaseAccountEvent, ISagaEvent, IWithdrawalPerformed
     {
         [JsonConstructor]
-        public WithdrawalPerformed(Guid accountId, decimal sum, DateTime created)
+        public WithdrawalPerformed(Guid accountId, DateTime created, Guid correlationId, decimal sum)
+            : base(accountId, created, correlationId)
         {
-            AccountId = accountId;
             Sum = sum;
-            Created = created;
         }
-
-        /// <summary>
-        /// Идентификатор расчетного счета.
-        /// </summary>
-        public Guid AccountId { get; }
 
         /// <summary>
         /// Сумма списания.
         /// </summary>
         public decimal Sum { get; }
 
-        /// <summary>
-        /// Дата создания.
-        /// </summary>
-        public DateTime Created { get; }
-
-        public static WithdrawalPerformed Create(Guid accountId, decimal sum)
-            => new WithdrawalPerformed(accountId, sum, DateTime.Now);
+        public static WithdrawalPerformed Create(Guid accountId, Guid correlationId, decimal sum)
+            => new WithdrawalPerformed(accountId, DateTime.Now, correlationId, sum);
     }
 }

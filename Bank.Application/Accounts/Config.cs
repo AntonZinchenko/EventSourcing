@@ -22,11 +22,13 @@ namespace Bank.Application.Accounts
             services.AddFluentValidation(new[] { typeof(CreateBankAccountValidator).GetTypeInfo().Assembly });
             services.AddScoped<IRepository<BankAccount>, MartenRepository<BankAccount>>();
 
+            // services.AddMediatR(typeof(BankAccountCommandHandler));
             services.AddScoped<IRequestHandler<ChangeOwnerCommand, Unit>, BankAccountCommandHandler>();
             services.AddScoped<IRequestHandler<CreateBankAccountCommand, Guid>, BankAccountCommandHandler>();
             services.AddScoped<IRequestHandler<PerformDepositeCommand, Unit>, BankAccountCommandHandler>();
             services.AddScoped<IRequestHandler<PerformWithdrawalCommand, Unit>, BankAccountCommandHandler>();
             services.AddScoped<IRequestHandler<RebuildAccountsViewsCommand, Unit>, BankAccountCommandHandler>();
+            services.AddScoped<IRequestHandler<TransferBetweenAccountsCommand, Unit>, BankAccountCommandHandler>();
 
             services.AddScoped<IRequestHandler<GetBankAccountDetailsQuery, BankAccountDetailsView>, BankAccountQueryHandler>();
             services.AddScoped<IRequestHandler<GetBankAccountShortInfoQuery, BankAccountShortInfoView>, BankAccountQueryHandler>();

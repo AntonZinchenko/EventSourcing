@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MediatR;
+using SeedWorks;
 using System;
 
 namespace Bank.Application.Accounts.Commands
@@ -7,9 +7,10 @@ namespace Bank.Application.Accounts.Commands
     /// <summary>
     /// Команда открытия расчетного счета.
     /// </summary>
-    public class CreateBankAccountCommand : IRequest<Guid>
+    public class CreateBankAccountCommand : CorrelationByRequest<Guid>
     {
-        public CreateBankAccountCommand(string owner)
+        public CreateBankAccountCommand(string owner, Guid correlationId)
+            : base(correlationId)
         {
             Owner = owner;
         }

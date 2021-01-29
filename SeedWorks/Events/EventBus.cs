@@ -1,3 +1,4 @@
+using MassTransit;
 using MediatR;
 using System.Threading.Tasks;
 
@@ -5,18 +6,23 @@ namespace SeedWorks.Core.Events
 {
     public class EventBus: IEventBus
     {
-        private readonly IMediator mediator;
+        private readonly IMediator _mediator;
+        private readonly IBusControl _bus;
 
-        public EventBus(IMediator mediator)
+        public EventBus(IMediator mediator, IBusControl bus)
         {
-            this.mediator = mediator;
+            _mediator = mediator;
+            _bus = bus;
         }
 
-        public async Task Publish(params IEvent[] events)
+        public async Task Publish(params dynamic[] events)
         {
             foreach (var @event in events)
             {
-                await mediator.Publish(@event);
+                if (@event is INotification)
+                    await _mediator.Publish(@event);
+
+                await _bus.Publish(@event);
             }
         }
     }

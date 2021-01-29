@@ -59,6 +59,11 @@
             Имя нового владельца.
             </summary>
         </member>
+        <member name="P:Bank.Application.Accounts.Commands.CorrelationByRequest`1.CorrelationId">
+            <summary>
+            Маркер корреляции.
+            </summary>
+        </member>
         <member name="T:Bank.Application.Accounts.Commands.CreateBankAccountCommand">
             <summary>
             Команда открытия расчетного счета.
@@ -102,6 +107,21 @@
         <member name="T:Bank.Application.Accounts.Commands.RebuildAccountsViewsCommand">
             <summary>
             Команда пересобирает материализованные представления.
+            </summary>
+        </member>
+        <member name="P:Bank.Application.Accounts.Commands.TransferBetweenAccountsCommand.SourceAccountId">
+            <summary>
+            Идентификатор счета с которого производится списание денеждных средств.
+            </summary>
+        </member>
+        <member name="P:Bank.Application.Accounts.Commands.TransferBetweenAccountsCommand.TargetAccountId">
+            <summary>
+            Идентификатор счета на который производится зачисление денеждных средств.
+            </summary>
+        </member>
+        <member name="P:Bank.Application.Accounts.Commands.TransferBetweenAccountsCommand.Sum">
+            <summary>
+            Сумма перевода.
             </summary>
         </member>
         <member name="T:Bank.Application.Accounts.Queries.GetBankAccountDetailsQuery">
