@@ -12,8 +12,10 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip
     {
         public async Task Consume(ConsumeContext<TransferSubmitted> context)
         {
+            // Инициация RoutingSlip
             var builder = new RoutingSlipBuilder(NewId.NextGuid());
 
+            // Операция списания денежных средств
             builder.AddActivity(
                 typeof(ProcessOutflowActivity).Name,
                 new Uri("queue:process-outflow_execute"),
@@ -23,16 +25,17 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip
                     context.Message.Sum,
                     context.Message.CorrelationId
                 });
-
-         builder.AddActivity(
-             typeof(ProcessInflowActivity).Name,
-             new Uri("queue:process-inflow_execute"),
-             new
-             {
-                 AccountId = context.Message.TargetAccountId,
-                 context.Message.Sum,
-                 context.Message.CorrelationId
-             });
+            
+            // Операция зачисления денежных средств
+            builder.AddActivity(
+                typeof(ProcessInflowActivity).Name,
+                new Uri("queue:process-inflow_execute"),
+                new
+                {
+                    AccountId = context.Message.TargetAccountId,
+                    context.Message.Sum,
+                    context.Message.CorrelationId
+                });
 
             await context.Execute(builder.Build());
         }

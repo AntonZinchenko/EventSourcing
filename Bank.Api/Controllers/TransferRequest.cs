@@ -5,7 +5,7 @@ namespace Bank.Api.Controllers
     public class TransferRequest
     {
         /// <summary>
-        /// Идентификатор счета на который производится зачисление денеждных средств.
+        /// Идентификатор счета на который производится зачисление денежных средств.
         /// </summary>
         public Guid TargetAccountId { get; set; }
 

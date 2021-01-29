@@ -15,6 +15,7 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip.Activities
 
         public override async Task<ExecutionResult> Execute(ExecuteContext<ProcessInflowArguments> context)
         {
+            // Выполняем зачисление
             await new PerformDepositeCommand(context.Arguments.AccountId, context.Arguments.Sum, context.Arguments.CorrelationId)
                 .PipeTo(async command => await SendCommand(command));
 

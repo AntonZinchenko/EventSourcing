@@ -19,12 +19,12 @@ namespace Bank.Orchestrators.Contracts
         public Guid CorrelationId { get; set; }
 
         /// <summary>
-        /// Идентификатор счета с которого производится списание денеждных средств.
+        /// Идентификатор счета с которого производится списание денежных средств.
         /// </summary>
         public Guid SourceAccountId { get; set; }
 
         /// <summary>
-        /// Идентификатор счета на который производится зачисление денеждных средств.
+        /// Идентификатор счета на который производится зачисление денежных средств.
         /// </summary>
         public Guid TargetAccountId { get; set; }
 
