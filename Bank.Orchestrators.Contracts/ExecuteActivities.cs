@@ -3,9 +3,9 @@ using System;
 
 namespace Bank.Orchestrators.Contracts
 {
-    public class TransferSubmitted : ISagaEvent
+    public class ExecuteActivities : ISagaRequest
     {
-        public TransferSubmitted(Guid sourceAccountId, Guid targetAccountId, decimal sum, Guid correlationId)
+        public ExecuteActivities(Guid sourceAccountId, Guid targetAccountId, decimal sum, Guid correlationId)
         {
             SourceAccountId = sourceAccountId;
             TargetAccountId = targetAccountId;
@@ -16,7 +16,7 @@ namespace Bank.Orchestrators.Contracts
         /// <summary>
         /// Маркер корреляции.
         /// </summary>
-        public Guid CorrelationId { get; set; }
+        public Guid CorrelationId { get; }
 
         /// <summary>
         /// Идентификатор счета с которого производится списание денежных средств.

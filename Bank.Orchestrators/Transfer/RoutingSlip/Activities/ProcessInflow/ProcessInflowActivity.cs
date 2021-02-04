@@ -1,4 +1,5 @@
-﻿using Bank.Application.Accounts.Commands;
+﻿using AutoMapper;
+using Bank.Application.Accounts.Commands;
 using MassTransit.Courier;
 using SeedWorks;
 using System;
@@ -9,8 +10,8 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip.Activities
     public class ProcessInflowActivity :
         BaseActivity<ProcessInflowArguments>
     {
-        public ProcessInflowActivity(IServiceProvider serviceProvider)
-            : base(serviceProvider) 
+        public ProcessInflowActivity(IServiceProvider serviceProvider, IMapper mapper)
+            : base(serviceProvider, mapper) 
         { }
 
         /// <summary>
@@ -18,7 +19,7 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip.Activities
         /// </summary>
         public override async Task<ExecutionResult> Execute(ExecuteContext<ProcessInflowArguments> context)
         {
-            await new PerformDepositeCommand(context.Arguments.AccountId, context.Arguments.Sum, context.Arguments.CorrelationId)
+            await _mapper.Map<PerformDepositeCommand>(context.Arguments)
                 .PipeTo(async command => await SendCommand(command));
 
             return context.Completed();

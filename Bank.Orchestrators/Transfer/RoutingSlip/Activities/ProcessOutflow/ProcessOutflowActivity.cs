@@ -1,4 +1,5 @@
-﻿using Bank.Application.Accounts.Commands;
+﻿using AutoMapper;
+using Bank.Application.Accounts.Commands;
 using MassTransit.Courier;
 using SeedWorks;
 using System;
@@ -9,8 +10,8 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip.Activities.ProcessOutflow
     public class ProcessOutflowActivity :
         BaseActivity<ProcessOutflowArguments>
     {
-        public ProcessOutflowActivity(IServiceProvider serviceProvider)
-            : base(serviceProvider)
+        public ProcessOutflowActivity(IServiceProvider serviceProvider, IMapper mapper)
+            : base(serviceProvider, mapper)
         { }
 
         /// <summary>
@@ -18,7 +19,7 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip.Activities.ProcessOutflow
         /// </summary>
         public override async Task<ExecutionResult> Execute(ExecuteContext<ProcessOutflowArguments> context)
         {
-            await new PerformWithdrawalCommand(context.Arguments.AccountId, context.Arguments.Sum, context.Arguments.CorrelationId)
+            await _mapper.Map<PerformWithdrawalCommand>(context.Arguments)
                 .PipeTo(async command => await SendCommand(command));
 
             return context.Completed(new
@@ -34,7 +35,7 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip.Activities.ProcessOutflow
         /// </summary>
         public override async Task<CompensationResult> Compensate(CompensateContext<ActivityLog> context)
         {
-            await new PerformDepositeCommand(context.Log.AccountId, context.Log.Sum, context.Log.CorrelationId)
+            await _mapper.Map<PerformDepositeCommand>(context.Log)
                .PipeTo(async command => await SendCommand(command));
 
             return context.Compensated();

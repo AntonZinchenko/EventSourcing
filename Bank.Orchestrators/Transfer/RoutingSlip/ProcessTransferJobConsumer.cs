@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Bank.Orchestrators.Transfer.RoutingSlip
 {
-    public class ProcessTransferJobConsumer : IConsumer<TransferSubmitted>
+    public class ProcessTransferJobConsumer : IConsumer<ExecuteActivities>
     {
-        public async Task Consume(ConsumeContext<TransferSubmitted> context)
+        public async Task Consume(ConsumeContext<ExecuteActivities> context)
         {
             // Инициация RoutingSlip
             var builder = new RoutingSlipBuilder(NewId.NextGuid());

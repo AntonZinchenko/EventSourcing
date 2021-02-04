@@ -1,4 +1,5 @@
-﻿using MassTransit.Courier;
+﻿using AutoMapper;
+using MassTransit.Courier;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -10,10 +11,12 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip.Activities
         IActivity<TArguments, ActivityLog> where TArguments : class
     {
         protected readonly IServiceProvider _serviceProvider;
+        protected readonly IMapper _mapper;
 
-        public BaseActivity(IServiceProvider serviceProvider)
+        public BaseActivity(IServiceProvider serviceProvider, IMapper mapper)
         {
             _serviceProvider = serviceProvider;
+            _mapper = mapper;
         }
 
         public virtual Task<CompensationResult> Compensate(CompensateContext<ActivityLog> context)

@@ -1,4 +1,5 @@
-﻿using Automatonymous;
+﻿using AutoMapper;
+using Automatonymous;
 using Bank.Orchestrators.Contracts;
 using Microsoft.Extensions.Logging;
 using System;
@@ -8,7 +9,7 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip
 {
     public class TransferStateMachine : MassTransitStateMachine<TransferState>
     {
-        public TransferStateMachine(ILogger<TransferState> logger)
+        public TransferStateMachine(ILogger<TransferState> logger, IMapper mapper)
         {
             InstanceState(x => x.CurrentState);
 
@@ -19,17 +20,12 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip
                     .Then(x => logger.LogInformation($"Банковский перевод со счета {x.Instance.SourceAccountId} на счет {x.Instance.TargetAccountId}."))
                     .Then(InitStateMachine)
                     .TransitionTo(ReadyToStart)
-                    .Then(x => x.Publish(new StartProcessing(x.Instance.CorrelationId))));
+                    .Publish(x => mapper.Map<StartProcessing>(x.Instance)));
 
             During(ReadyToStart,
                 When(ProcessStartedEvent)
                     .TransitionTo(PendingWithdrawalFinalization)
-                    .Publish(context =>
-                        new TransferSubmitted(
-                            context.Instance.SourceAccountId,
-                            context.Instance.TargetAccountId,
-                            context.Instance.Sum,
-                            context.Instance.CorrelationId)));
+                    .Publish(x => mapper.Map<ExecuteActivities>(x.Instance)));
 
             During(PendingWithdrawalFinalization,
                  When(WithdrawalCompletedEvent)
@@ -38,17 +34,17 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip
 
             During(PendingDepositeFinalization,
                   When(DepositeCompletedEvent)
-                     .Then(x => logger.LogInformation($"Выполнено успешное зачисление денежных средств в размере {x.Instance.Sum} на счет {x.Instance.TargetAccountId}."))
-                     .Then(x => x.Instance.Comment = "Transaction completed successfully.")
-                     .TransitionTo(Completed)
-                     .Finalize());
+                    .Then(x => logger.LogInformation($"Выполнено успешное зачисление денежных средств в размере {x.Instance.Sum} на счет {x.Instance.TargetAccountId}."))
+                    .Then(x => x.Instance.Comment = "Transaction completed successfully.")
+                    .TransitionTo(Completed)
+                    .Finalize());
 
             DuringAny(
                   When(OperationFaultedEvent)
-                     .Then(x => logger.LogInformation($"Перевод денежных средств со счета {x.Instance.SourceAccountId} на счет {x.Instance.TargetAccountId} закончился неудачей! Причина: [{DateTime.Now}] {x.Data.Reason}."))
-                     .ThenAsync(NotifyMonitoringService)
-                     .Then(x => x.Instance.Comment = x.Data.Reason)
-                     .TransitionTo(Faulted));
+                    .Then(x => logger.LogInformation($"Перевод денежных средств со счета {x.Instance.SourceAccountId} на счет {x.Instance.TargetAccountId} закончился неудачей! Причина: [{DateTime.Now}] {x.Data.Reason}."))
+                    .ThenAsync(NotifyMonitoringService)
+                    .Then(x => x.Instance.Comment = x.Data.Reason)
+                    .TransitionTo(Faulted));
         }
 
         /// <summary>
@@ -76,16 +72,16 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip
             Event(() => OperationFaultedEvent, x => x.CorrelateById(x => x.Message.CorrelationId));
         }
 
-        public State ReadyToStart { get; private set; }
-        public State PendingWithdrawalFinalization { get; private set; }
-        public State PendingDepositeFinalization { get; private set; }
-        public State Completed { get; private set; }
-        public State Faulted { get; private set; }
+        public State ReadyToStart { get; }
+        public State PendingWithdrawalFinalization { get; }
+        public State PendingDepositeFinalization { get; }
+        public State Completed { get; }
+        public State Faulted { get; }
 
-        public Event<ISumTransferStarted> ExecuteTransferEvent { get; set; }
-        public Event<StartProcessing> ProcessStartedEvent { get; set; }
-        public Event<IWithdrawalPerformed> WithdrawalCompletedEvent { get; set; }
-        public Event<IDepositePerformed> DepositeCompletedEvent { get; set; }
-        public Event<ActionFaulted> OperationFaultedEvent { get; set; }
+        public Event<ISumTransferStarted> ExecuteTransferEvent { get; }
+        public Event<StartProcessing> ProcessStartedEvent { get; }
+        public Event<IWithdrawalPerformed> WithdrawalCompletedEvent { get; }
+        public Event<IDepositePerformed> DepositeCompletedEvent { get; }
+        public Event<ActionFaulted> OperationFaultedEvent { get; }
     }
 }

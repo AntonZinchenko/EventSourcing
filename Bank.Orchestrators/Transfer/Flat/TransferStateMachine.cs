@@ -1,4 +1,5 @@
-﻿using Automatonymous;
+﻿using AutoMapper;
+using Automatonymous;
 using Bank.Application.Accounts.Commands;
 using Bank.Orchestrators.Contracts;
 using MediatR;
@@ -13,10 +14,12 @@ namespace Bank.Orchestrators.Transfer.Flat
     public class TransferStateMachine : MassTransitStateMachine<TransferState>
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly IMapper _mapper;
 
-        public TransferStateMachine(ILogger<TransferState> logger, IServiceProvider serviceProvider)
+        public TransferStateMachine(ILogger<TransferState> logger, IServiceProvider serviceProvider, IMapper mapper)
         {
             _serviceProvider = serviceProvider;
+            _mapper = mapper;
 
             InstanceState(x => x.CurrentState);
 
@@ -27,7 +30,7 @@ namespace Bank.Orchestrators.Transfer.Flat
                     .Then(x => logger.LogInformation($"Банковский перевод со счета {x.Instance.SourceAccountId} на счет {x.Instance.TargetAccountId}."))
                     .Then(InitStateMachine)
                     .TransitionTo(ReadyToStart)
-                    .Then(x => x.Publish(new StartProcessing(x.Instance.CorrelationId))));
+                    .Publish(x => mapper.Map<StartProcessing>(x.Instance)));
 
             During(ReadyToStart,
                 When(ProcessStartedEvent)
@@ -72,21 +75,21 @@ namespace Bank.Orchestrators.Transfer.Flat
         /// Выполнить списание денежных средств. 
         /// </summary>
         private async Task ProcessOutFlowOperation(BehaviorContext<TransferState, StartProcessing> context)
-            => await new PerformWithdrawalCommand(context.Instance.SourceAccountId, context.Instance.Sum, context.Instance.CorrelationId)
+            => await _mapper.Map<PerformWithdrawalCommand>(context)
                 .PipeTo(async command => await SendCommand(command));
 
         /// <summary>
         /// Выполнить зачисление денежных средств.
         /// </summary>
         private async Task ProcessInFlowOperation(BehaviorContext<TransferState, IWithdrawalPerformed> context)
-            => await new PerformDepositeCommand(context.Instance.TargetAccountId, context.Instance.Sum, context.Instance.CorrelationId)
+            => await _mapper.Map<PerformDepositeCommand>(context)
                 .PipeTo(async command => await SendCommand(command));
 
         /// <summary>
         /// Откатить списание денежных средств. 
         /// </summary>
         private async Task RollbackWithdrawal(BehaviorContext<TransferState, ActionFaulted> context)
-            => await new PerformDepositeCommand(context.Instance.SourceAccountId, context.Instance.Sum, context.Instance.CorrelationId)
+            => await _mapper.Map<PerformDepositeCommand>(context)
                 .PipeTo(async command => await SendCommand(command));
 
         /// <summary>
@@ -111,16 +114,16 @@ namespace Bank.Orchestrators.Transfer.Flat
             Event(() => OperationFaultedEvent, x => x.CorrelateById(x => x.Message.CorrelationId));
         }
 
-        public State ReadyToStart { get; private set; }
-        public State PendingWithdrawalFinalization { get; private set; }
-        public State PendingDepositeFinalization { get; private set; }
-        public State Completed { get; private set; }
-        public State Faulted { get; private set; }
+        public State ReadyToStart { get; }
+        public State PendingWithdrawalFinalization { get; }
+        public State PendingDepositeFinalization { get; }
+        public State Completed { get; }
+        public State Faulted { get; }
 
-        public Event<ISumTransferStarted> ExecuteTransferEvent { get; set; }
-        public Event<StartProcessing> ProcessStartedEvent { get; set; }
-        public Event<IWithdrawalPerformed> WithdrawalCompletedEvent { get; set; }
-        public Event<IDepositePerformed> DepositeCompletedEvent { get; set; }
-        public Event<ActionFaulted> OperationFaultedEvent { get; set; }
+        public Event<ISumTransferStarted> ExecuteTransferEvent { get; }
+        public Event<StartProcessing> ProcessStartedEvent { get; }
+        public Event<IWithdrawalPerformed> WithdrawalCompletedEvent { get; }
+        public Event<IDepositePerformed> DepositeCompletedEvent { get; }
+        public Event<ActionFaulted> OperationFaultedEvent { get; }
     }
 }
