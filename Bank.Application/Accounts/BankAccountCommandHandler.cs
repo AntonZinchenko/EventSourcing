@@ -1,6 +1,9 @@
 ﻿using Bank.Application.Accounts.Commands;
 using Bank.DomainModel.Accounts;
+using Bank.DomainModel.Accounts.Events;
 using Bank.MaterializedView.Accounts.Views;
+using Bank.Orchestrators.Contracts;
+using MassTransit;
 using MediatR;
 using SeedWorks;
 using SeedWorks.Core.Storage;
@@ -10,25 +13,28 @@ using System.Threading.Tasks;
 
 namespace Bank.Application.Accounts
 {
-    internal class BankAccountCommandHandler:
+    internal class BankAccountCommandHandler :
         IRequestHandler<CreateBankAccountCommand, Guid>,
         IRequestHandler<ChangeOwnerCommand>,
         IRequestHandler<PerformDepositeCommand>,
         IRequestHandler<PerformWithdrawalCommand>,
-        IRequestHandler<RebuildAccountsViewsCommand>
+        IRequestHandler<RebuildAccountsViewsCommand>,
+        IRequestHandler<TransferBetweenAccountsCommand>
     {
         private readonly IRepository<BankAccount> _repository;
+        private readonly IBusControl _bus;
 
-        public BankAccountCommandHandler(IRepository<BankAccount> repository)
+        public BankAccountCommandHandler(IRepository<BankAccount> repository, IBusControl bus)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _bus = bus ?? throw new ArgumentNullException(nameof(bus));
         }
 
         /// <summary>
         /// Обработчик команды открытия расчетного счета.
         /// </summary>
         public Task<Guid> Handle(CreateBankAccountCommand request, CancellationToken cancellationToken)
-            => BankAccount.Create(request.Owner)
+            => BankAccount.Create(request.Owner, request.CorrelationId)
                 .Do(bankAccount => _repository.Add(bankAccount, cancellationToken).Wait())
                 .PipeTo(bankAccount => Task.FromResult(bankAccount.Id));
 
@@ -38,7 +44,7 @@ namespace Bank.Application.Accounts
         public async Task<Unit> Handle(PerformDepositeCommand request, CancellationToken cancellationToken)
             => await TransformEntity(
                 request.AccountId,
-                ag => ag.PerformDeposite(request.Sum),
+                ag => ag.PerformDeposite(request.Sum, request.CorrelationId),
                 cancellationToken);
 
         /// <summary>
@@ -47,7 +53,7 @@ namespace Bank.Application.Accounts
         public async Task<Unit> Handle(ChangeOwnerCommand request, CancellationToken cancellationToken)
             => await TransformEntity(
                 request.AccountId,
-                ag => ag.ChangeOwner(request.NewOwner),
+                ag => ag.ChangeOwner(request.NewOwner, request.CorrelationId),
                 cancellationToken);
 
         /// <summary>
@@ -56,20 +62,33 @@ namespace Bank.Application.Accounts
         public async Task<Unit> Handle(PerformWithdrawalCommand request, CancellationToken cancellationToken)
             => await TransformEntity(
                 request.AccountId,
-                ag => ag.PerformWithdrawal(request.Sum),
+                ag => ag.PerformWithdrawal(request.Sum, request.CorrelationId),
                 cancellationToken);
 
         /// <summary>
         /// Обработчик команды пересборки материализованных представлений.
         /// </summary>
         public async Task<Unit> Handle(RebuildAccountsViewsCommand request, CancellationToken cancellationToken)
-            => await _repository.RebuildViews(new[]
-                    {
+            => await _repository.RebuildViews(
+                new[]
+                {
                         typeof(BankAccount),
                         typeof(BankAccountDetailsView),
                         typeof(BankAccountShortInfoView),
-                    }, cancellationToken)
-                .ContinueWith(_ => Unit.Value, TaskContinuationOptions.OnlyOnRanToCompletion);
+                }, cancellationToken).ContinueWith(_ => Unit.Value, TaskContinuationOptions.OnlyOnRanToCompletion);
+
+        public async Task<Unit> Handle(TransferBetweenAccountsCommand request, CancellationToken cancellationToken)
+        {
+            await _bus.Publish<ISumTransferStarted>(
+                new
+                {
+                    request.SourceAccountId,
+                    request.TargetAccountId,
+                    request.Sum,
+                    request.CorrelationId
+                }, cancellationToken);
+            return Unit.Value;
+        }
 
         private async Task<Unit> TransformEntity(Guid accountId, Action<BankAccount> processEvent, CancellationToken cancellationToken)
             => (await _repository.Find(accountId, cancellationToken))

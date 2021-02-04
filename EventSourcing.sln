@@ -13,7 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeedWorks", "SeedWorks\Seed
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bank.MaterializedView", "Bank.MaterializedView\Bank.MaterializedView.csproj", "{64EF226E-F3E6-40E4-A1F4-0F92057A5661}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank.Storage", "Bank.Storage\Bank.Storage.csproj", "{ED561A12-E81A-4137-B49A-456AADFA95C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bank.Storage", "Bank.Storage\Bank.Storage.csproj", "{ED561A12-E81A-4137-B49A-456AADFA95C1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orchestrators", "Orchestrators", "{C178F2C1-58D8-43AB-A980-FE7DF7933307}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank.Orchestrators.Contracts", "Bank.Orchestrators.Contracts\Bank.Orchestrators.Contracts.csproj", "{016746FC-59D7-4319-9DD6-3C018CF0068A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank.Orchestrators", "Bank.Orchestrators\Bank.Orchestrators.csproj", "{4DFE2186-EA52-4303-A638-79276BCDCA16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +51,21 @@ Global
 		{ED561A12-E81A-4137-B49A-456AADFA95C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED561A12-E81A-4137-B49A-456AADFA95C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED561A12-E81A-4137-B49A-456AADFA95C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{016746FC-59D7-4319-9DD6-3C018CF0068A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{016746FC-59D7-4319-9DD6-3C018CF0068A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{016746FC-59D7-4319-9DD6-3C018CF0068A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{016746FC-59D7-4319-9DD6-3C018CF0068A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DFE2186-EA52-4303-A638-79276BCDCA16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DFE2186-EA52-4303-A638-79276BCDCA16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DFE2186-EA52-4303-A638-79276BCDCA16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DFE2186-EA52-4303-A638-79276BCDCA16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{016746FC-59D7-4319-9DD6-3C018CF0068A} = {C178F2C1-58D8-43AB-A980-FE7DF7933307}
+		{4DFE2186-EA52-4303-A638-79276BCDCA16} = {C178F2C1-58D8-43AB-A980-FE7DF7933307}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {368808F5-41AD-4350-9CCE-94006217266C}

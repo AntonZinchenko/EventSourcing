@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using SeedWorks;
 using System;
 
 namespace Bank.Application.Accounts.Commands
@@ -7,9 +8,10 @@ namespace Bank.Application.Accounts.Commands
     /// <summary>
     /// Команда переоформления счета на другого пользователя.
     /// </summary>
-    public class ChangeOwnerCommand : IRequest<Unit>
+    public class ChangeOwnerCommand: CorrelationByRequest<Unit>
     {
-        public ChangeOwnerCommand(Guid accountId, string newOwner)
+        public ChangeOwnerCommand(Guid accountId, string newOwner, Guid correlationId)
+            : base(correlationId)
         {
             AccountId = accountId;
             NewOwner = newOwner;

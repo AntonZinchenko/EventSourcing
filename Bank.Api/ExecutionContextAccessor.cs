@@ -18,14 +18,14 @@ namespace Bank.Api
         {
             get
             {
-                if (_httpContextAccessor.HttpContext.Request.Headers.Keys.Any(
+                if (_httpContextAccessor.HttpContext != null && _httpContextAccessor.HttpContext.Request.Headers.Keys.Any(
                     x => x == CorrelationMiddleware.CorrelationHeaderKey))
                 {
                     return Guid.Parse(
                         _httpContextAccessor.HttpContext.Request.Headers[CorrelationMiddleware.CorrelationHeaderKey]);
                 }
 
-                throw new ApplicationException("Http context and correlation id is not available");
+                return Guid.NewGuid();
             }
         }
     }

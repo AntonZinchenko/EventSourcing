@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using SeedWorks.Core.Events;
 using System;
 
 namespace Bank.DomainModel.Accounts.Events
@@ -7,32 +6,21 @@ namespace Bank.DomainModel.Accounts.Events
     /// <summary>
     /// Событие открытия расчетного счета.
     /// </summary>
-    public class BankAccountCreated : IEvent
+    public class BankAccountCreated : BaseAccountEvent
     {
         [JsonConstructor]
-        public BankAccountCreated(Guid accountId, string owner, DateTime created)
+        public BankAccountCreated(Guid accountId, DateTime created, Guid correlationId, string owner)
+            : base(accountId, created, correlationId)
         {
-            AccountId = accountId;
             Owner = owner;
-            Created = created;
         }
-
-        /// <summary>
-        /// Идентификатор расчетного счета.
-        /// </summary>
-        public Guid AccountId { get; }
 
         /// <summary>
         /// Имя владельца расчетного счета.
         /// </summary>
         public string Owner { get; }
 
-        /// <summary>
-        /// Дата создания.
-        /// </summary>
-        public DateTime Created { get; }
-
-        public static BankAccountCreated Create(string owner)
-            => new BankAccountCreated(Guid.NewGuid(), owner, DateTime.Now);
+        public static BankAccountCreated Create(Guid correlationId, string owner)
+            => new BankAccountCreated(Guid.NewGuid(), DateTime.Now, correlationId, owner);
     }
 }

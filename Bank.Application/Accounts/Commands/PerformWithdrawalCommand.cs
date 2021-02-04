@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
+using SeedWorks;
+using SeedWorks.Core.Events;
 using System;
 
 namespace Bank.Application.Accounts.Commands
@@ -7,9 +9,10 @@ namespace Bank.Application.Accounts.Commands
     /// <summary>
     /// Команда списания с расчетного счета.
     /// </summary>
-    public class PerformWithdrawalCommand : IRequest<Unit>
+    public class PerformWithdrawalCommand : CorrelationByRequest<Unit>, ISagaRequest
     {
-        public PerformWithdrawalCommand(Guid accountId, decimal sum)
+        public PerformWithdrawalCommand(Guid accountId, decimal sum, Guid correlationId)
+            : base(correlationId)
         {
             AccountId = accountId;
             Sum = sum;

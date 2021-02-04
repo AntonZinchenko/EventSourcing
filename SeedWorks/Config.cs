@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SeedWorks.Core.Events;
-using SeedWorks.Processing;
 
 namespace SeedWorks
 {
@@ -19,7 +18,6 @@ namespace SeedWorks
         {
             services.AddScoped<IMediator, Mediator>();
             services.AddTransient<ServiceFactory>(sp => sp.GetService);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
         }
     }
 }

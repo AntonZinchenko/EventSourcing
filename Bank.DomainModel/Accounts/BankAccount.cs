@@ -26,11 +26,11 @@ namespace Bank.DomainModel.Accounts
 
         public BankAccount() { }
 
-        public BankAccount(string owner)
+        public BankAccount(string owner, Guid correlationId)
         {
             CheckRules(new OwnerNameNotEmptyRule(owner));
 
-            BankAccountCreated.Create(owner)
+            BankAccountCreated.Create(correlationId, owner)
                 .Do(Enqueue)
                 .Do(Apply);
         }
@@ -49,18 +49,18 @@ namespace Bank.DomainModel.Accounts
         /// Открыть расчетный счет.
         /// </summary>
         /// <param name="owner">Имя владельца.</param>
-        public static BankAccount Create(string owner)
-            => new BankAccount(owner);
+        public static BankAccount Create(string owner, Guid correlationId)
+            => new BankAccount(owner, correlationId);
 
         /// <summary>
         /// Выполнить начисление депозитных процентов.
         /// </summary>
         /// <param name="sum">Сумма проводки.</param>
-        public void PerformDeposite(decimal sum)
+        public void PerformDeposite(decimal sum, Guid correlationId)
         {
             CheckRules(new DepositeSumIsPositiveRule(sum));
 
-            DepositePerformed.Create(Id, sum)
+            DepositePerformed.Create(Id, correlationId, sum)
                 .Do(Enqueue)
                 .Do(Apply);
         }
@@ -69,11 +69,11 @@ namespace Bank.DomainModel.Accounts
         /// Переоформить счет на другого пользователя.
         /// </summary>
         /// <param name="newOwner">Имя нового владельца.</param>
-        public void ChangeOwner(string newOwner)
+        public void ChangeOwner(string newOwner, Guid correlationId)
         {
             CheckRules(new OwnerNameNotEmptyRule(newOwner));
 
-            OwnerChanged.Create(Id, newOwner)
+            OwnerChanged.Create(Id, correlationId, newOwner)
                 .Do(Enqueue)
                 .Do(Apply);
         }
@@ -82,11 +82,11 @@ namespace Bank.DomainModel.Accounts
         /// Выполнить списание с расчетного счета.
         /// </summary>
         /// <param name="sum">Сумма списания.</param>
-        public void PerformWithdrawal(decimal sum)
+        public void PerformWithdrawal(decimal sum, Guid correlationId)
         {
             CheckRules(new WithdrawalSumExceedsAccountBalanceRule(sum, Balance));
 
-            WithdrawalPerformed.Create(Id, sum)
+            WithdrawalPerformed.Create(Id, correlationId, sum)
                 .Do(Enqueue)
                 .Do(Apply);
         }
