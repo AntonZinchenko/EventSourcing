@@ -13,9 +13,11 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip.Activities.ProcessOutflow
             : base(serviceProvider)
         { }
 
+        /// <summary>
+        /// Выполняем списание денежных средств. 
+        /// </summary>
         public override async Task<ExecutionResult> Execute(ExecuteContext<ProcessOutflowArguments> context)
         {
-            // Выполняем списание
             await new PerformWithdrawalCommand(context.Arguments.AccountId, context.Arguments.Sum, context.Arguments.CorrelationId)
                 .PipeTo(async command => await SendCommand(command));
 
@@ -27,10 +29,11 @@ namespace Bank.Orchestrators.Transfer.RoutingSlip.Activities.ProcessOutflow
             });
         }
 
-        
+        /// <summary>
+        /// Компенсация списания денежных средств. 
+        /// </summary>
         public override async Task<CompensationResult> Compensate(CompensateContext<ActivityLog> context)
         {
-            // Компенсация списания
             await new PerformDepositeCommand(context.Log.AccountId, context.Log.Sum, context.Log.CorrelationId)
                .PipeTo(async command => await SendCommand(command));
 

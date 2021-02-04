@@ -6,7 +6,6 @@ using Bank.Orchestrators.Contracts;
 using MassTransit;
 using MediatR;
 using SeedWorks;
-using SeedWorks.Core.Events;
 using SeedWorks.Core.Storage;
 using System;
 using System.Threading;
@@ -14,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Bank.Application.Accounts
 {
-    internal class BankAccountCommandHandler:
+    internal class BankAccountCommandHandler :
         IRequestHandler<CreateBankAccountCommand, Guid>,
         IRequestHandler<ChangeOwnerCommand>,
         IRequestHandler<PerformDepositeCommand>,
@@ -70,7 +69,8 @@ namespace Bank.Application.Accounts
         /// Обработчик команды пересборки материализованных представлений.
         /// </summary>
         public async Task<Unit> Handle(RebuildAccountsViewsCommand request, CancellationToken cancellationToken)
-            => await _repository.RebuildViews(new[]
+            => await _repository.RebuildViews(
+                new[]
                 {
                         typeof(BankAccount),
                         typeof(BankAccountDetailsView),
@@ -79,13 +79,14 @@ namespace Bank.Application.Accounts
 
         public async Task<Unit> Handle(TransferBetweenAccountsCommand request, CancellationToken cancellationToken)
         {
-            await _bus.Publish(new SumTransferStarted
-            {
-                SourceAccountId = request.SourceAccountId,
-                TargetAccountId = request.TargetAccountId,
-                Sum = request.Sum,
-                CorrelationId = request.CorrelationId
-            }, cancellationToken);
+            await _bus.Publish<ISumTransferStarted>(
+                new
+                {
+                    request.SourceAccountId,
+                    request.TargetAccountId,
+                    request.Sum,
+                    request.CorrelationId
+                }, cancellationToken);
             return Unit.Value;
         }
 
