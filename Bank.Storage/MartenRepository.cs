@@ -12,13 +12,13 @@ using SeedWorks.Core.Aggregates;
 using SeedWorks.Core.Events;
 using SeedWorks.Core.Storage;
 
-namespace Bank.Storage
+namespace BankAccount.Storage
 {
     public class MartenRepository<T>: IRepository<T> where T : class, IAggregate, new()
     {
         private readonly IDocumentSession _documentSession;
-        private readonly IEventBus _eventBus;
         private readonly string _readModelSchema;
+        private readonly IEventBus _eventBus;
 
         public MartenRepository(
             IDocumentSession documentSession,

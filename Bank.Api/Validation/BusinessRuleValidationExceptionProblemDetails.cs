@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SeedWorks.Validation;
 
-namespace Bank.Api.Validation
+namespace BankAccount.Api.Validation
 {
     public class BusinessRuleValidationExceptionProblemDetails : ProblemDetails
     {

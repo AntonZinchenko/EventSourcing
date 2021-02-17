@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Bank.Orchestrators.Contracts;
+using Transfer.Contracts.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SeedWorks;
 using SeedWorks.Core.Events;
 
-namespace Bank.Application.Processing
+namespace BankAccount.Application.Processing
 {
     public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {

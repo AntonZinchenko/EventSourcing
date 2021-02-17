@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BankAccount.Application</name>
+    </assembly>
+    <members>
+        <member name="M:BankAccount.Application.commandHandler.Handle(BankAccount.Application.Commands.CreateBankAccountCommand,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик команды открытия расчетного счета.
+            </summary>
+        </member>
+        <member name="M:BankAccount.Application.commandHandler.Handle(BankAccount.Application.Commands.PerformDepositeCommand,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик команды начисления депозитных процентов.
+            </summary>
+        </member>
+        <member name="M:BankAccount.Application.commandHandler.Handle(BankAccount.Application.Commands.ChangeOwnerCommand,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик команды переоформления счета на другого пользователя.
+            </summary>
+        </member>
+        <member name="M:BankAccount.Application.commandHandler.Handle(BankAccount.Application.Commands.PerformWithdrawalCommand,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик команды списания с расчетного счета.
+            </summary>
+        </member>
+        <member name="M:BankAccount.Application.commandHandler.Handle(BankAccount.Application.Commands.RebuildAccountsViewsCommand,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик команды пересборки материализованных представлений.
+            </summary>
+        </member>
+        <member name="T:BankAccount.Application.Commands.ChangeOwnerCommand">
+            <summary>
+            Команда переоформления счета на другого пользователя.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Application.Commands.ChangeOwnerCommand.AccountId">
+            <summary>
+            Идентификатор расчетного счета.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Application.Commands.ChangeOwnerCommand.NewOwner">
+            <summary>
+            Имя нового владельца.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Application.Commands.CorrelationByRequest`1.CorrelationId">
+            <summary>
+            Маркер корреляции.
+            </summary>
+        </member>
+        <member name="T:BankAccount.Application.Commands.CreateBankAccountCommand">
+            <summary>
+            Команда открытия расчетного счета.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Application.Commands.CreateBankAccountCommand.Owner">
+            <summary>
+            Имя владельца.
+            </summary>
+        </member>
+        <member name="T:BankAccount.Application.Commands.PerformDepositeCommand">
+            <summary>
+            Команда начисления депозитных процентов.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Application.Commands.PerformDepositeCommand.AccountId">
+            <summary>
+            Идентификатор расчетного счета.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Application.Commands.PerformDepositeCommand.Sum">
+            <summary>
+            Сумма проводки.
+            </summary>
+        </member>
+        <member name="T:BankAccount.Application.Commands.PerformWithdrawalCommand">
+            <summary>
+            Команда списания с расчетного счета.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Application.Commands.PerformWithdrawalCommand.AccountId">
+            <summary>
+            Идентификатор расчетного счета.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Application.Commands.PerformWithdrawalCommand.Sum">
+            <summary>
+            Сумма списания.
+            </summary>
+        </member>
+        <member name="T:BankAccount.Application.Commands.RebuildAccountsViewsCommand">
+            <summary>
+            Команда пересобирает материализованные представления.
+            </summary>
+        </member>
+        <member name="T:BankAccount.Application.Queries.GetBankAccountDetailsQuery">
+            <summary>
+            Запрос детализации по расчетному счету.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Application.Queries.GetBankAccountDetailsQuery.AccountId">
+            <summary>
+            Идентификатор расчетного счета.
+            </summary>
+        </member>
+        <member name="T:BankAccount.Application.Queries.GetBankAccountShortInfoQuery">
+            <summary>
+            Запрос краткой информацию по расчетному счету.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Application.Queries.GetBankAccountShortInfoQuery.AccountId">
+            <summary>
+            Идентификатор расчетного счета.
+            </summary>
+        </member>
+        <member name="T:BankAccount.Application.Queries.GetBankAccountsQuery">
+            <summary>
+            Запрос списка доступных расчетных счетов.
+            </summary>
+        </member>
+        <member name="M:BankAccount.Application.QueryHandler.Handle(BankAccount.Application.Queries.GetBankAccountsQuery,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик запроса списка доступных расчетных счетов.
+            </summary>
+        </member>
+        <member name="M:BankAccount.Application.QueryHandler.Handle(BankAccount.Application.Queries.GetBankAccountShortInfoQuery,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик запроса краткой информацию по расчетному счету.
+            </summary>
+        </member>
+        <member name="M:BankAccount.Application.QueryHandler.Handle(BankAccount.Application.Queries.GetBankAccountDetailsQuery,System.Threading.CancellationToken)">
+            <summary>
+            Обработчик запроса детализации по расчетному счету.
+            </summary>
+        </member>
+    </members>
+</doc>

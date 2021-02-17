@@ -1,19 +1,39 @@
-using Bank.Application.Accounts;
-using Bank.Application.Processing;
-using Bank.Storage;
+﻿using BankAccount.Application.Commands;
+using BankAccount.Application.Processing;
+using BankAccount.MaterializedView.Projections;
+using BankAccount.Storage;
+using Marten;
 using MediatR;
+using MediatR.Extensions.FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SeedWorks.Core.Storage;
+using System.Reflection;
 
-namespace Bank.Application
+namespace BankAccount.Application
 {
     public static class Config
     {
-        public static void AddBankAccountManagement(this IServiceCollection services, IConfiguration config)
+        public static void ConfigApplication(this IServiceCollection services, IConfiguration config)
         {
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            services.AddMarten(config, options => Accounts.Config.ConfigureMarten(options));
-            services.AddBankAccount();
+            services.AddMarten(config, options => ConfigureMarten(options));
+            services.ConfigMediatR();
+        }
+
+        public static void ConfigMediatR(this IServiceCollection services)
+        {
+            services.AddFluentValidation(new[] { typeof(CreateBankAccountValidator).GetTypeInfo().Assembly });
+            services.AddScoped<IRepository<DomainModel.BankAccount>, MartenRepository<DomainModel.BankAccount>>();
+
+            services.AddMediatR(typeof(commandHandler));
+        }
+
+        public static void ConfigureMarten(StoreOptions options)
+        {
+            options.Events.InlineProjections.AggregateStreamsWith<DomainModel.BankAccount>();
+            options.Events.InlineProjections.Add<BankAccountDetailsViewProjection>();
+            options.Events.InlineProjections.Add<BankAccountShortInfoViewProjection>();
         }
     }
 }

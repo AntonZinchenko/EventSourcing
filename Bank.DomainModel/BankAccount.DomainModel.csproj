@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Marten" Version="3.13.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Bank.Orchestrators.Contracts\Transfer.Contracts.csproj" />
+    <ProjectReference Include="..\SeedWorks\SeedWorks.csproj" />
+  </ItemGroup>
+
+</Project>

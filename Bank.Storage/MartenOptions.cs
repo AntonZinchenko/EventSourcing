@@ -1,4 +1,4 @@
-﻿namespace Bank.Storage
+﻿namespace BankAccount.Storage
 {
     public class MartenOptions
     {

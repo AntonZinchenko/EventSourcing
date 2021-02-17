@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Bank.Api.Validation
+namespace BankAccount.Api.Validation
 {
     public class FluentValidationExceptionProblemDetails : ProblemDetails
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Bank.Storage
+namespace BankAccount.Storage
 {
     public class EntityNotFoundException: ValidationException
     {

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Bank.Application.Accounts.Commands;
-using Bank.Application.Accounts.Queries;
+using BankAccount.Application.Commands;
+using BankAccount.Application.Queries;
+using BankAccount.Contracts.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SeedWorks;
 
-namespace Bank.Api.Controllers
+namespace BankAccount.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -78,10 +79,10 @@ namespace Bank.Api.Controllers
         /// <param name="id">Идентификатор расчетного счета.</param>
         /// <param name="request"></param>
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpPatch("{id}/performDeposite")]
+        [HttpPost("{id}/performDeposite")]
         public async Task<IActionResult> PerformDeposite(Guid id, [FromBody] PerformDepositeRequest request)
             => (await _mediator.Send(new PerformDepositeCommand(id, request.Sum, _contextAccessor.CorrelationId)))
-                .PipeTo(_ => new OkResult());
+                .PipeTo(_ => new AcceptedResult());
 
         /// <summary>
         /// Выполнить списание с расчетного счета.
@@ -89,10 +90,10 @@ namespace Bank.Api.Controllers
         /// <param name="id">Идентификатор расчетного счета.</param>
         /// <param name="request"></param>
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpPatch("{id}/performWithdrawal")]
+        [HttpPost("{id}/performWithdrawal")]
         public async Task<IActionResult> PerformWithdrawal(Guid id, [FromBody] PerformWithdrawalRequest request)
             => (await _mediator.Send(new PerformWithdrawalCommand(id, request.Sum, _contextAccessor.CorrelationId)))
-                .PipeTo(_ => new OkResult());
+                .PipeTo(_ => new AcceptedResult());
 
         /// <summary>
         /// Пересобрать материализованные представления.
@@ -101,10 +102,5 @@ namespace Bank.Api.Controllers
         public async Task<IActionResult> RebuildViews()
             => (await _mediator.Send(new RebuildAccountsViewsCommand()))
                 .PipeTo(_ => NoContent());
-
-        [HttpPatch("{id}/transferTo")]
-        public async Task<IActionResult> TransferBetweenAccountsCommand(Guid id, [FromBody] TransferRequest request)
-            => (await _mediator.Send(new TransferBetweenAccountsCommand(id, request.TargetAccountId, request.Sum, _contextAccessor.CorrelationId)))
-                .PipeTo(_ => new OkResult());
     }
 }

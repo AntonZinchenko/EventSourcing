@@ -1,8 +1,4 @@
-﻿using Bank.Orchestrators.Transfer;
-using Bank.Orchestrators.Transfer.Flat;
-using Bank.Orchestrators.Transfer.RoutingSlip.Activities;
-using Bank.Orchestrators.Transfer.RoutingSlip.Activities.ProcessOutflow;
-using MassTransit;
+﻿using MassTransit;
 using MassTransit.Saga;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,12 +9,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
-using Bank.Orchestrators.Transfer.StatePersistence;
 using AutoMapper;
-using Bank.Orchestrators.Mappers;
 using SeedWorks;
+using Transfer.Storage;
+using Transfer.Application.Orchestrators.Flat;
+using Transfer.Application.Orchestrators.Activities.ProcessOutflow;
+using Transfer.Application.Orchestrators.RoutingSlip.Activities;
+using Transfer.Application.Mappers;
+using Transfer.Contracts.Events;
+using Microsoft.Extensions.Options;
 
-namespace Bank.Orchestrators
+namespace Transfer.Application
 {
     public static class Config
     {
@@ -27,15 +28,16 @@ namespace Bank.Orchestrators
             services.InitAutoMapper()
                 .AddMassTransit(x =>
                 {
+                    x.AddServiceClient();
+                    x.AddRequestClient<ISumTransferStarted>();
                     x.AddConsumers(Assembly.GetExecutingAssembly());
                     x.AddActivities(Assembly.GetExecutingAssembly());
                     x.SetKebabCaseEndpointNameFormatter();
                     x.AddSagaStateMachine<TransferStateMachine, TransferState>(sagaConfig =>
                     {
-                        // sagaConfig.UseMessageRetry(r => r.Immediate(5));
+                        sagaConfig.UseMessageRetry(r => r.Immediate(5));
                         sagaConfig.UseInMemoryOutbox();
                     })
-                    //.InMemoryRepository();
                     .EntityFrameworkRepository(r =>
                     {
                         r.ConcurrencyMode = ConcurrencyMode.Pessimistic;
@@ -54,8 +56,15 @@ namespace Bank.Orchestrators
 
                     var provider = x.Collection.BuildServiceProvider();
 
-                    x.UsingInMemory((context, cfg) =>
+                    x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
                     {
+                        var settings = provider.GetService<IOptions<RabbitOptions>>().Value;
+                        cfg.Host(settings.Host, "/", h =>
+                        {
+                            h.Username(settings.Login);
+                            h.Password(settings.Password);
+                        });
+
                         cfg.AutoStart = true;
                         cfg.ReceiveEndpoint(e =>
                         {
@@ -70,20 +79,15 @@ namespace Bank.Orchestrators
                                     sagaConfig.UseInMemoryOutbox();
                                 });
                         });
-
-                        cfg.ConfigureEndpoints(context);
-                    });
+                    }));
                 });
 
             services.AddSingleton<IHostedService, BusHostedService>();
         }
 
         public static IServiceCollection InitAutoMapper(this IServiceCollection services)
-            => new MapperConfiguration(x =>
-                {
-                    x.AddProfile<ActivityToCommandProfile>();
-                    x.AddProfile<TransferStateToCommandProfile>();
-                }).PipeTo(config => services.AddSingleton(config.CreateMapper()));
+            => new MapperConfiguration(x => x.AddProfile<TransferStateToCommandProfile>())
+                .PipeTo(config => services.AddSingleton(config.CreateMapper()));
     }
 
     public class BusHostedService : IHostedService
