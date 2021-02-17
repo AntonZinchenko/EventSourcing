@@ -18,15 +18,11 @@ namespace BankAccount.Application
         {
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             services.AddMarten(config, options => ConfigureMarten(options));
-            services.ConfigMediatR();
-        }
 
-        public static void ConfigMediatR(this IServiceCollection services)
-        {
             services.AddFluentValidation(new[] { typeof(CreateBankAccountValidator).GetTypeInfo().Assembly });
             services.AddScoped<IRepository<DomainModel.BankAccount>, MartenRepository<DomainModel.BankAccount>>();
 
-            services.AddMediatR(typeof(commandHandler));
+            services.AddMediatR(typeof(CommandHandler));
         }
 
         public static void ConfigureMarten(StoreOptions options)

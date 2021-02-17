@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using SeedWorks;
 using System;
 
 namespace BankAccount.Application.Commands

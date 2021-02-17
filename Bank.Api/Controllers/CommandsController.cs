@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using BankAccount.Application.Commands;
-using BankAccount.Application.Queries;
 using BankAccount.Contracts.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -13,44 +11,18 @@ namespace BankAccount.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BankAccountController : ControllerBase
+    public class CommandsController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly IExecutionContextAccessor _contextAccessor;
 
-        public BankAccountController(
+        public CommandsController(
             IMediator mediator,
             IExecutionContextAccessor contextAccessor)
         {
             _mediator = mediator;
             _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
         }
-
-        /// <summary>
-        /// Получить список доступных расчетных счетов.
-        /// </summary>
-        [HttpGet()]
-        public async Task<Dictionary<Guid, string>> GetAll()
-            => await _mediator.Send(new GetBankAccountsQuery());
-
-        /// <summary>
-        /// Получить краткую информацию по расчетному счету.
-        /// </summary>
-        /// <param name="id">Идентификатор расчетного счета.</param>
-        [HttpGet("{id}/info")]
-        public async Task<IActionResult> GetShortInfoAsync(Guid id)
-            => (await _mediator.Send(new GetBankAccountShortInfoQuery(id)))
-               .Either(Ok, _ => (IActionResult)new NotFoundResult());
-
-        /// <summary>
-        /// Получить детализацию по расчетному счету.
-        /// </summary>
-        /// <param name="id">Идентификатор расчетного счета.</param>
-        /// <returns></returns>
-        [HttpGet("{id}/details")]
-        public async Task<IActionResult> GetAccountDetails(Guid id)
-            => (await _mediator.Send(new GetBankAccountDetailsQuery(id)))
-                .Either(Ok, _ => (IActionResult)new NotFoundResult());
 
         /// <summary>
         /// Открыть расчетный счет.

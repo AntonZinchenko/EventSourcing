@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using BankAccount.Storage;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

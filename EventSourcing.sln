@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankAccount.Storage", "Bank
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Transfer", "Transfer", "{C178F2C1-58D8-43AB-A980-FE7DF7933307}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transfer.Contracts", "Bank.Orchestrators.Contracts\Transfer.Contracts.csproj", "{016746FC-59D7-4319-9DD6-3C018CF0068A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transfer.Contracts", "Transfer.Contracts\Transfer.Contracts.csproj", "{016746FC-59D7-4319-9DD6-3C018CF0068A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transfer.Application", "Bank.Orchestrators\Transfer.Application.csproj", "{4DFE2186-EA52-4303-A638-79276BCDCA16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transfer.Application", "Transfer.Application\Transfer.Application.csproj", "{4DFE2186-EA52-4303-A638-79276BCDCA16}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BankAccount", "BankAccount", "{F415F2A1-3377-4C37-9C11-BAF071492089}"
 EndProject

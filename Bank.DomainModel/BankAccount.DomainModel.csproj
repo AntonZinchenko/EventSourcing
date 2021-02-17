@@ -9,8 +9,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\Bank.Orchestrators.Contracts\Transfer.Contracts.csproj" />
     <ProjectReference Include="..\SeedWorks\SeedWorks.csproj" />
+    <ProjectReference Include="..\Transfer.Contracts\Transfer.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,26 +1,26 @@
-﻿using MassTransit;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SeedWorks;
 using System;
 using System.Threading.Tasks;
-using Transfer.Contracts.Events;
+using Transfer.Application.Commands;
 using Transfer.Contracts.Requests;
 
 namespace Transfer.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TransferController : ControllerBase
+    public class CommandsController : ControllerBase
     {
-        private readonly IRequestClient<ISumTransferStarted> _transferClient;
+        private readonly IMediator _mediator;
         private readonly IExecutionContextAccessor _contextAccessor;
 
-        public TransferController(
-            IRequestClient<ISumTransferStarted> transferClient,
+        public CommandsController(
+            IMediator mediator,
             IExecutionContextAccessor contextAccessor)
         {
-            _transferClient = transferClient ?? throw new ArgumentNullException(nameof(IRequestClient<ISumTransferStarted>));
+            _mediator = mediator;
             _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
         }
 
@@ -32,12 +32,7 @@ namespace Transfer.Api.Controllers
         [HttpPost("execute")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public async Task<IActionResult> ExecuteTransferCommand([FromBody] TransferRequest request)
-            => (await _transferClient.GetResponse<ISumTransferStarted>(new
-            {
-                request.SourceAccountId,
-                request.TargetAccountId,
-                request.Sum,
-                _contextAccessor.CorrelationId
-            })).PipeTo(_ => new AcceptedResult());
+            => (await _mediator.Send(new TransferBetweenAccountsCommand(request.SourceAccountId, request.TargetAccountId, request.Sum, _contextAccessor.CorrelationId)))
+                .PipeTo(_ => new OkResult());
     }
 }

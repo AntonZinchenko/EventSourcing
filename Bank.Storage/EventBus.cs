@@ -1,8 +1,9 @@
 using MassTransit;
 using MediatR;
+using SeedWorks.Core.Events;
 using System.Threading.Tasks;
 
-namespace SeedWorks.Core.Events
+namespace BankAccount.Storage
 {
     public class EventBus: IEventBus
     {

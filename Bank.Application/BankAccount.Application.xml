@@ -4,27 +4,27 @@
         <name>BankAccount.Application</name>
     </assembly>
     <members>
-        <member name="M:BankAccount.Application.commandHandler.Handle(BankAccount.Application.Commands.CreateBankAccountCommand,System.Threading.CancellationToken)">
+        <member name="M:BankAccount.Application.CommandHandler.Handle(BankAccount.Application.Commands.CreateBankAccountCommand,System.Threading.CancellationToken)">
             <summary>
             Обработчик команды открытия расчетного счета.
             </summary>
         </member>
-        <member name="M:BankAccount.Application.commandHandler.Handle(BankAccount.Application.Commands.PerformDepositeCommand,System.Threading.CancellationToken)">
+        <member name="M:BankAccount.Application.CommandHandler.Handle(BankAccount.Application.Commands.PerformDepositeCommand,System.Threading.CancellationToken)">
             <summary>
             Обработчик команды начисления депозитных процентов.
             </summary>
         </member>
-        <member name="M:BankAccount.Application.commandHandler.Handle(BankAccount.Application.Commands.ChangeOwnerCommand,System.Threading.CancellationToken)">
+        <member name="M:BankAccount.Application.CommandHandler.Handle(BankAccount.Application.Commands.ChangeOwnerCommand,System.Threading.CancellationToken)">
             <summary>
             Обработчик команды переоформления счета на другого пользователя.
             </summary>
         </member>
-        <member name="M:BankAccount.Application.commandHandler.Handle(BankAccount.Application.Commands.PerformWithdrawalCommand,System.Threading.CancellationToken)">
+        <member name="M:BankAccount.Application.CommandHandler.Handle(BankAccount.Application.Commands.PerformWithdrawalCommand,System.Threading.CancellationToken)">
             <summary>
             Обработчик команды списания с расчетного счета.
             </summary>
         </member>
-        <member name="M:BankAccount.Application.commandHandler.Handle(BankAccount.Application.Commands.RebuildAccountsViewsCommand,System.Threading.CancellationToken)">
+        <member name="M:BankAccount.Application.CommandHandler.Handle(BankAccount.Application.Commands.RebuildAccountsViewsCommand,System.Threading.CancellationToken)">
             <summary>
             Обработчик команды пересборки материализованных представлений.
             </summary>
@@ -42,11 +42,6 @@
         <member name="P:BankAccount.Application.Commands.ChangeOwnerCommand.NewOwner">
             <summary>
             Имя нового владельца.
-            </summary>
-        </member>
-        <member name="P:BankAccount.Application.Commands.CorrelationByRequest`1.CorrelationId">
-            <summary>
-            Маркер корреляции.
             </summary>
         </member>
         <member name="T:BankAccount.Application.Commands.CreateBankAccountCommand">

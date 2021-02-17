@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using System;
 
-namespace BankAccount.Application.Commands
+namespace SeedWorks
 {
     public class CorrelationByRequest<T> : IRequest<T>
     {

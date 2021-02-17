@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BankAccount.Application
 {
-    internal class commandHandler :
+    internal class CommandHandler :
         IRequestHandler<CreateBankAccountCommand, Guid>,
         IRequestHandler<ChangeOwnerCommand>,
         IRequestHandler<PerformDepositeCommand>,
@@ -18,7 +18,7 @@ namespace BankAccount.Application
     {
         private readonly IRepository<DomainModel.BankAccount> _repository;
 
-        public commandHandler(IRepository<DomainModel.BankAccount> repository)
+        public CommandHandler(IRepository<DomainModel.BankAccount> repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
