@@ -9,7 +9,7 @@ using SeedWorks;
 
 namespace BankAccount.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("Api/[controller]")]
     [ApiController]
     public class CommandsController : ControllerBase
     {
@@ -32,7 +32,7 @@ namespace BankAccount.Api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Post([FromBody] CreateBankAccountRequest request)
             => (await _mediator.Send(new CreateBankAccountCommand(request.Owner, _contextAccessor.CorrelationId)))
-                .PipeTo(accountId => Created("api/BankAccount/info", accountId));
+                .PipeTo(accountId => Created("api/Queries/Info", accountId));
 
         /// <summary>
         /// Переоформить счет на другого пользователя.
@@ -40,7 +40,7 @@ namespace BankAccount.Api.Controllers
         /// <param name="id">Идентификатор расчетного счета.</param>
         /// <param name="request"></param>
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpPatch("{id}/renameOwner")]
+        [HttpPatch("{id}/RenameOwner")]
         public async Task<IActionResult> ChangeOwner(Guid id, [FromBody] ChangeOwnerRequest request)
             => (await _mediator.Send(new ChangeOwnerCommand(id, request.NewOwner, _contextAccessor.CorrelationId)))
                 .PipeTo(_ => new OkResult());
@@ -51,7 +51,7 @@ namespace BankAccount.Api.Controllers
         /// <param name="id">Идентификатор расчетного счета.</param>
         /// <param name="request"></param>
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpPost("{id}/performDeposite")]
+        [HttpPost("{id}/PerformDeposite")]
         public async Task<IActionResult> PerformDeposite(Guid id, [FromBody] PerformDepositeRequest request)
             => (await _mediator.Send(new PerformDepositeCommand(id, request.Sum, _contextAccessor.CorrelationId)))
                 .PipeTo(_ => new AcceptedResult());
@@ -62,7 +62,7 @@ namespace BankAccount.Api.Controllers
         /// <param name="id">Идентификатор расчетного счета.</param>
         /// <param name="request"></param>
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpPost("{id}/performWithdrawal")]
+        [HttpPost("{id}/PerformWithdrawal")]
         public async Task<IActionResult> PerformWithdrawal(Guid id, [FromBody] PerformWithdrawalRequest request)
             => (await _mediator.Send(new PerformWithdrawalCommand(id, request.Sum, _contextAccessor.CorrelationId)))
                 .PipeTo(_ => new AcceptedResult());
@@ -70,7 +70,7 @@ namespace BankAccount.Api.Controllers
         /// <summary>
         /// Пересобрать материализованные представления.
         /// </summary>
-        [HttpPost("rebuildViews")]
+        [HttpPost("RebuildViews")]
         public async Task<IActionResult> RebuildViews()
             => (await _mediator.Send(new RebuildAccountsViewsCommand()))
                 .PipeTo(_ => NoContent());

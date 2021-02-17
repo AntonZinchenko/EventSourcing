@@ -4,7 +4,7 @@ using System;
 
 namespace Transfer.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("Api/[controller]")]
     [ApiController]
     public class QueriesController : ControllerBase
     {

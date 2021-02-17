@@ -9,7 +9,7 @@ using Transfer.Contracts.Requests;
 
 namespace Transfer.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("Api/[controller]")]
     [ApiController]
     public class CommandsController : ControllerBase
     {
@@ -29,7 +29,7 @@ namespace Transfer.Api.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("execute")]
+        [HttpPost("Execute")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public async Task<IActionResult> ExecuteTransferCommand([FromBody] TransferRequest request)
             => (await _mediator.Send(new TransferBetweenAccountsCommand(request.SourceAccountId, request.TargetAccountId, request.Sum, _contextAccessor.CorrelationId)))

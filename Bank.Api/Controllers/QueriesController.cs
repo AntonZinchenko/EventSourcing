@@ -8,14 +8,13 @@ using SeedWorks;
 
 namespace BankAccount.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("Api/[controller]")]
     [ApiController]
-    public class BankAccountController : ControllerBase
+    public class QueriesController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public BankAccountController(
-            IMediator mediator)
+        public QueriesController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -31,7 +30,7 @@ namespace BankAccount.Api.Controllers
         /// Получить краткую информацию по расчетному счету.
         /// </summary>
         /// <param name="id">Идентификатор расчетного счета.</param>
-        [HttpGet("{id}/info")]
+        [HttpGet("{id}/Info")]
         public async Task<IActionResult> GetShortInfoAsync(Guid id)
             => (await _mediator.Send(new GetBankAccountShortInfoQuery(id)))
                .Either(Ok, _ => (IActionResult)new NotFoundResult());
@@ -41,7 +40,7 @@ namespace BankAccount.Api.Controllers
         /// </summary>
         /// <param name="id">Идентификатор расчетного счета.</param>
         /// <returns></returns>
-        [HttpGet("{id}/details")]
+        [HttpGet("{id}/Details")]
         public async Task<IActionResult> GetAccountDetails(Guid id)
             => (await _mediator.Send(new GetBankAccountDetailsQuery(id)))
                 .Either(Ok, _ => (IActionResult)new NotFoundResult());
