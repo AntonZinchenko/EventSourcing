@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 
 namespace Transfer.Application.Interfaces
 {
-    public interface IClient {}
-
     /// <summary>
     /// Клиент для отправки сообщений к службе BankAccount
     /// </summary>

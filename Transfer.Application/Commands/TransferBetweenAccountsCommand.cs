@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
-using MediatR;
 using SeedWorks;
 using System;
 
 namespace Transfer.Application.Commands
 {
-    public class TransferBetweenAccountsCommand : CorrelationByRequest<Unit>
+    public class TransferBetweenAccountsCommand : CorrelationByRequest<Guid>
     {
         public TransferBetweenAccountsCommand(Guid sourceAccountId, Guid targetAccountId, decimal sum, Guid correlationId)
             : base(correlationId)

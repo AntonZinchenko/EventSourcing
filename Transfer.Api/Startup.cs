@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using SeedWorks;
 using Transfer.Application;
 
+
 namespace Transfer.Api
 {
     public class Startup
@@ -20,6 +21,8 @@ namespace Transfer.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
             services
                 .AddCustomSwagger()
@@ -36,6 +39,8 @@ namespace Transfer.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors();
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -46,7 +51,6 @@ namespace Transfer.Api
             app.UseMiddleware<CorrelationMiddleware>();
 
             app.UseRouting();
-         // app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

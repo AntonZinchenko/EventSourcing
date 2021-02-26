@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Transfer.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Transfer.Api.Controllers.CommandsController.ExecuteTransferCommand(Transfer.Contracts.Requests.TransferRequest)">
+            <summary>
+            Выполнить денежный перевод между счетами.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Transfer.Api.Controllers.QueriesController.Get">
+            <summary>
+            Получить список активных транзакций.
+            </summary>
+        </member>
+        <member name="M:Transfer.Api.CustomExtensionsMethods.AddCustomSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Конфигурирование Swagger.
+            </summary>
+        </member>
+        <member name="M:Transfer.Api.CustomExtensionsMethods.InitHttpClients(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Инициализация http клиентов к вспомогательным сервисам.
+            </summary>
+        </member>
+        <member name="M:Transfer.Api.CustomExtensionsMethods.AddOptions(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Инициализация объектов предназначенных для работы с конфигом.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -23,13 +23,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transfer.Application", "Tra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BankAccount", "BankAccount", "{F415F2A1-3377-4C37-9C11-BAF071492089}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transfer.Api", "Transfer.Api\Transfer.Api.csproj", "{BCD9E1E2-D9CE-4CF8-AA44-1D7912CCF971}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transfer.Api", "Transfer.Api\Transfer.Api.csproj", "{BCD9E1E2-D9CE-4CF8-AA44-1D7912CCF971}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transfer.Storage", "Transfer.Storage\Transfer.Storage.csproj", "{53A32B03-93E9-4DC2-B12C-5C9DAD8D4135}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transfer.Storage", "Transfer.Storage\Transfer.Storage.csproj", "{53A32B03-93E9-4DC2-B12C-5C9DAD8D4135}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transfer.Infrastructure", "Transfer.Infrastructure\Transfer.Infrastructure.csproj", "{AB3E2624-9761-4A04-9FB2-3E0FD5704CF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transfer.Infrastructure", "Transfer.Infrastructure\Transfer.Infrastructure.csproj", "{AB3E2624-9761-4A04-9FB2-3E0FD5704CF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankAccount.Contracts", "BankAccount.Contracts\BankAccount.Contracts.csproj", "{F3D5CD10-2E16-44C6-B392-EDB1E338B59F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankAccount.Contracts", "BankAccount.Contracts\BankAccount.Contracts.csproj", "{F3D5CD10-2E16-44C6-B392-EDB1E338B59F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graphql.Types", "Transfer.Graphql\Graphql.Types.csproj", "{02D2B579-6C74-4FFE-B192-67232506AF5E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{D6F50E3E-08DE-4940-A9C6-2584942D7ABE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gateway", "Gateway\Gateway.csproj", "{E58D8137-A40C-4E58-89CF-1827AF515156}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Graphql", "Graphql", "{EB9131C0-C8E5-434E-B6F2-A80A721C25E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +93,14 @@ Global
 		{F3D5CD10-2E16-44C6-B392-EDB1E338B59F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3D5CD10-2E16-44C6-B392-EDB1E338B59F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3D5CD10-2E16-44C6-B392-EDB1E338B59F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02D2B579-6C74-4FFE-B192-67232506AF5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02D2B579-6C74-4FFE-B192-67232506AF5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02D2B579-6C74-4FFE-B192-67232506AF5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02D2B579-6C74-4FFE-B192-67232506AF5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E58D8137-A40C-4E58-89CF-1827AF515156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E58D8137-A40C-4E58-89CF-1827AF515156}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E58D8137-A40C-4E58-89CF-1827AF515156}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E58D8137-A40C-4E58-89CF-1827AF515156}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +117,9 @@ Global
 		{53A32B03-93E9-4DC2-B12C-5C9DAD8D4135} = {C178F2C1-58D8-43AB-A980-FE7DF7933307}
 		{AB3E2624-9761-4A04-9FB2-3E0FD5704CF4} = {C178F2C1-58D8-43AB-A980-FE7DF7933307}
 		{F3D5CD10-2E16-44C6-B392-EDB1E338B59F} = {F415F2A1-3377-4C37-9C11-BAF071492089}
+		{02D2B579-6C74-4FFE-B192-67232506AF5E} = {EB9131C0-C8E5-434E-B6F2-A80A721C25E7}
+		{E58D8137-A40C-4E58-89CF-1827AF515156} = {D6F50E3E-08DE-4940-A9C6-2584942D7ABE}
+		{EB9131C0-C8E5-434E-B6F2-A80A721C25E7} = {D6F50E3E-08DE-4940-A9C6-2584942D7ABE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {368808F5-41AD-4350-9CCE-94006217266C}

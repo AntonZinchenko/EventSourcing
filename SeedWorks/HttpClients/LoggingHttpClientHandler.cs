@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Transfer.Infrastructure
+namespace SeedWorks.HttpClients
 {
     public class LoggingHttpClientHandler: HttpClientHandler
     {

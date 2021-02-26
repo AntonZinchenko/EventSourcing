@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using SeedWorks;
+using SeedWorks.HttpClients;
 using System;
 using System.IO;
 using System.Linq;

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace BankAccount.MaterializedView.Views
+namespace BankAccount.Contracts.Views
 {
     public class BankAccountDetailsView
     {

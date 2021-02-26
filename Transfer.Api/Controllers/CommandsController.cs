@@ -20,7 +20,7 @@ namespace Transfer.Api.Controllers
             IMediator mediator,
             IExecutionContextAccessor contextAccessor)
         {
-            _mediator = mediator;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
         }
 
@@ -33,6 +33,6 @@ namespace Transfer.Api.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public async Task<IActionResult> ExecuteTransferCommand([FromBody] TransferRequest request)
             => (await _mediator.Send(new TransferBetweenAccountsCommand(request.SourceAccountId, request.TargetAccountId, request.Sum, _contextAccessor.CorrelationId)))
-                .PipeTo(_ => new OkResult());
+                .PipeTo(_ => new AcceptedResult());
     }
 }

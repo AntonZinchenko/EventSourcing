@@ -7,7 +7,9 @@ using MediatR;
 using MediatR.Extensions.FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SeedWorks;
 using SeedWorks.Core.Storage;
+using System;
 using System.Reflection;
 
 namespace BankAccount.Application
@@ -19,10 +21,8 @@ namespace BankAccount.Application
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             services.AddMarten(config, options => ConfigureMarten(options));
 
-            services.AddFluentValidation(new[] { typeof(CreateBankAccountValidator).GetTypeInfo().Assembly });
             services.AddScoped<IRepository<DomainModel.BankAccount>, MartenRepository<DomainModel.BankAccount>>();
-
-            services.AddMediatR(typeof(CommandHandler));
+            services.ConfigMediatR(typeof(CommandHandler));
         }
 
         public static void ConfigureMarten(StoreOptions options)

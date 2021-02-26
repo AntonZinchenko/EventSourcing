@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Bank.DomainModel\BankAccount.DomainModel.csproj" />
+    <ProjectReference Include="..\BankAccount.Contracts\BankAccount.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

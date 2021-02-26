@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BankAccount.Api</name>
+    </assembly>
+    <members>
+        <member name="M:BankAccount.Api.Controllers.BankAccountController.GetAll">
+            <summary>
+            Получить список доступных расчетных счетов.
+            </summary>
+        </member>
+        <member name="M:BankAccount.Api.Controllers.BankAccountController.GetShortInfoAsync(System.Guid)">
+            <summary>
+            Получить краткую информацию по расчетному счету.
+            </summary>
+            <param name="id">Идентификатор расчетного счета.</param>
+        </member>
+        <member name="M:BankAccount.Api.Controllers.BankAccountController.GetAccountDetails(System.Guid)">
+            <summary>
+            Получить детализацию по расчетному счету.
+            </summary>
+            <param name="id">Идентификатор расчетного счета.</param>
+            <returns></returns>
+        </member>
+        <member name="M:BankAccount.Api.Controllers.BankAccountController.Post(BankAccount.Api.Controllers.CreateBankAccountRequest)">
+            <summary>
+            Открыть расчетный счет.
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:BankAccount.Api.Controllers.BankAccountController.ChangeOwner(System.Guid,BankAccount.Api.Controllers.ChangeOwnerRequest)">
+            <summary>
+            Переоформить счет на другого пользователя.
+            </summary>
+            <param name="id">Идентификатор расчетного счета.</param>
+            <param name="request"></param>
+        </member>
+        <member name="M:BankAccount.Api.Controllers.BankAccountController.PerformDeposite(System.Guid,BankAccount.Api.Controllers.PerformDepositeRequest)">
+            <summary>
+            Выполнить начисление депозитных процентов.
+            </summary>
+            <param name="id">Идентификатор расчетного счета.</param>
+            <param name="request"></param>
+        </member>
+        <member name="M:BankAccount.Api.Controllers.BankAccountController.PerformWithdrawal(System.Guid,BankAccount.Api.Controllers.PerformWithdrawalRequest)">
+            <summary>
+            Выполнить списание с расчетного счета.
+            </summary>
+            <param name="id">Идентификатор расчетного счета.</param>
+            <param name="request"></param>
+        </member>
+        <member name="M:BankAccount.Api.Controllers.BankAccountController.RebuildViews">
+            <summary>
+            Пересобрать материализованные представления.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Api.Controllers.ChangeOwnerRequest.NewOwner">
+            <summary>
+            Имя нового владельца.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Api.Controllers.CreateBankAccountRequest.Owner">
+            <summary>
+            Имя владельца.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Api.Controllers.PerformDepositeRequest.Sum">
+            <summary>
+            Сумма проводки.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Api.Controllers.PerformWithdrawalRequest.Sum">
+            <summary>
+            Сумма списания.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Api.Controllers.TransferRequest.TargetAccountId">
+            <summary>
+            Идентификатор счета на который производится зачисление денежных средств.
+            </summary>
+        </member>
+        <member name="P:BankAccount.Api.Controllers.TransferRequest.Sum">
+            <summary>
+            Сумма перевода.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,5 +1,5 @@
 ﻿using BankAccount.Application.Commands;
-using BankAccount.MaterializedView.Views;
+using BankAccount.Contracts.Views;
 using MediatR;
 using SeedWorks;
 using SeedWorks.Core.Storage;

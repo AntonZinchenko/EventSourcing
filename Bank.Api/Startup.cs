@@ -26,6 +26,8 @@ namespace BankAccount.Api
             services.AddMvc().AddNewtonsoftJson();
             services.AddControllers();
 
+            services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+
             services.AddProblemDetails(x =>
             {
                 x.Map<FluentValidation.ValidationException>(ex => new FluentValidationExceptionProblemDetails(ex));
@@ -47,6 +49,8 @@ namespace BankAccount.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

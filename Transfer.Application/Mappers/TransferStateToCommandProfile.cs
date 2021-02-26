@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Transfer.Contracts.Events;
+using Transfer.Contracts.Types;
 using Transfer.Storage;
 
 namespace Transfer.Application.Mappers
@@ -17,6 +18,9 @@ namespace Transfer.Application.Mappers
                     src.TargetAccountId,
                     src.Sum,
                     src.CorrelationId));
+
+            CreateMap<TransferState, TransferView>()
+                .ForMember(dto => dto.Id, conf => conf.MapFrom(ol => ol.CorrelationId));
         }
     }
 }

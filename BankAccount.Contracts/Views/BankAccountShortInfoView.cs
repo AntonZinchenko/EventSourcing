@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BankAccount.MaterializedView.Views
+namespace BankAccount.Contracts.Views
 {
     public class BankAccountShortInfoView
     {

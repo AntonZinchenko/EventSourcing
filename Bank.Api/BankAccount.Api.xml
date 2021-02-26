@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BankAccount.Api</name>
+    </assembly>
+    <members>
+        <member name="M:BankAccount.Api.Controllers.CommandsController.Post(BankAccount.Contracts.Requests.CreateBankAccountRequest)">
+            <summary>
+            Открыть расчетный счет.
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:BankAccount.Api.Controllers.CommandsController.ChangeOwner(System.Guid,BankAccount.Contracts.Requests.ChangeOwnerRequest)">
+            <summary>
+            Переоформить счет на другого пользователя.
+            </summary>
+            <param name="id">Идентификатор расчетного счета.</param>
+            <param name="request"></param>
+        </member>
+        <member name="M:BankAccount.Api.Controllers.CommandsController.PerformDeposite(System.Guid,BankAccount.Contracts.Requests.PerformDepositeRequest)">
+            <summary>
+            Выполнить начисление депозитных процентов.
+            </summary>
+            <param name="id">Идентификатор расчетного счета.</param>
+            <param name="request"></param>
+        </member>
+        <member name="M:BankAccount.Api.Controllers.CommandsController.PerformWithdrawal(System.Guid,BankAccount.Contracts.Requests.PerformWithdrawalRequest)">
+            <summary>
+            Выполнить списание с расчетного счета.
+            </summary>
+            <param name="id">Идентификатор расчетного счета.</param>
+            <param name="request"></param>
+        </member>
+        <member name="M:BankAccount.Api.Controllers.CommandsController.RebuildViews">
+            <summary>
+            Пересобрать материализованные представления.
+            </summary>
+        </member>
+        <member name="M:BankAccount.Api.Controllers.QueriesController.GetAll">
+            <summary>
+            Получить список доступных расчетных счетов.
+            </summary>
+        </member>
+        <member name="M:BankAccount.Api.Controllers.QueriesController.GetShortInfo(System.Guid)">
+            <summary>
+            Получить краткую информацию по расчетному счету.
+            </summary>
+            <param name="id">Идентификатор расчетного счета.</param>
+        </member>
+        <member name="M:BankAccount.Api.Controllers.QueriesController.GetAccountDetails(System.Guid)">
+            <summary>
+            Получить детализацию по расчетному счету.
+            </summary>
+            <param name="id">Идентификатор расчетного счета.</param>
+            <returns></returns>
+        </member>
+        <member name="M:BankAccount.Api.CustomExtensionsMethods.AddCustomSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Конфигурирование Swagger.
+            </summary>
+        </member>
+        <member name="M:BankAccount.Api.CustomExtensionsMethods.ConfigRabbitBus(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Настройка шины сообщений.
+            </summary>
+        </member>
+        <member name="M:BankAccount.Api.CustomExtensionsMethods.AddOptions(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Инициализация объектов предназначенных для работы с конфигом.
+            </summary>
+        </member>
+    </members>
+</doc>

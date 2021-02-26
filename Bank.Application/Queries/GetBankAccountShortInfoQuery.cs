@@ -1,4 +1,4 @@
-﻿using BankAccount.MaterializedView.Views;
+﻿using BankAccount.Contracts.Views;
 using FluentValidation;
 using MediatR;
 using System;

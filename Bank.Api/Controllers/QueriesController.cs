@@ -31,7 +31,7 @@ namespace BankAccount.Api.Controllers
         /// </summary>
         /// <param name="id">Идентификатор расчетного счета.</param>
         [HttpGet("{id}/Info")]
-        public async Task<IActionResult> GetShortInfoAsync(Guid id)
+        public async Task<IActionResult> GetShortInfo(Guid id)
             => (await _mediator.Send(new GetBankAccountShortInfoQuery(id)))
                .Either(Ok, _ => (IActionResult)new NotFoundResult());
 

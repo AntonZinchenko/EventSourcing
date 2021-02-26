@@ -10,7 +10,7 @@ using Transfer.Contracts.Events;
 namespace Transfer.Application
 {
     internal class CommandHandler :
-        IRequestHandler<TransferBetweenAccountsCommand>
+        IRequestHandler<TransferBetweenAccountsCommand, Guid>
     {
         private readonly IRequestClient<ISumTransferStarted> _transferClient;
 
@@ -19,13 +19,13 @@ namespace Transfer.Application
             _transferClient = transferClient ?? throw new ArgumentNullException(nameof(transferClient));
         }
 
-        public async Task<Unit> Handle(TransferBetweenAccountsCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(TransferBetweenAccountsCommand request, CancellationToken cancellationToken)
             => (await _transferClient.GetResponse<ISumTransferStarted>(new
                {
                    request.SourceAccountId,
                    request.TargetAccountId,
                    request.Sum,
                    request.CorrelationId
-               })).PipeTo(_ => Unit.Value);
+               })).PipeTo(_ => request.CorrelationId);
     }
 }

@@ -1,7 +1,7 @@
-﻿using BankAccount.MaterializedView.Views;
-using BankAccount.DomainModel.Events;
+﻿using BankAccount.DomainModel.Events;
 using System;
 using Marten.Events.Projections;
+using BankAccount.Contracts.Views;
 
 namespace BankAccount.MaterializedView.Projections
 {

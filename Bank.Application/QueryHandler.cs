@@ -1,5 +1,5 @@
 ﻿using BankAccount.Application.Queries;
-using BankAccount.MaterializedView.Views;
+using BankAccount.Contracts.Views;
 using Marten;
 using MediatR;
 using SeedWorks;

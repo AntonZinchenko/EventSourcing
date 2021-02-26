@@ -87,8 +87,8 @@ namespace Transfer.Application
 
             services.AddSingleton<IHostedService, BusHostedService>();
 
-            services.AddFluentValidation(new[] { typeof(TransferBetweenAccountsCommandValidator).GetTypeInfo().Assembly });
-            services.AddMediatR(typeof(CommandHandler));
+            services.AddDbContext<TransferDbContext>();
+            services.ConfigMediatR(typeof(CommandHandler));
         }
 
         public static IServiceCollection InitAutoMapper(this IServiceCollection services)
