@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using HotChocolate.AspNetCore;
 using Gateway.Graphql;
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 
 namespace Gateway
 {
@@ -20,6 +22,8 @@ namespace Gateway
         {
             services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
+           services.AddOcelot(Configuration);
+
             services.InitHttpClients(Configuration)
                 .RegistergGraphqlTypes();
         }
@@ -32,6 +36,8 @@ namespace Gateway
                 .UseWebSockets()
                 .UseGraphQL()
                 .UsePlayground();
+
+            await app.UseOcelot();
         }
     }
 }

@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using BankAccount.Application.Queries;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using SeedWorks;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Transfer.Application.Interfaces;
+using Transfer.Application.Orchestrators;
+using Transfer.Application.Specifications;
 using Transfer.Contracts.Types;
-using Transfer.Storage;
 
 namespace Transfer.Application
 {
@@ -17,39 +16,29 @@ namespace Transfer.Application
         IRequestHandler<GetTransactionsQuery, List<TransferView>>,
         IRequestHandler<GetTransactionQuery, TransferView>
     {
-        private readonly TransferDbContext _context;
+        private readonly IQueryRepository<TransferState> _queryRepository;
         private readonly IMapper _mapper;
 
         public QueryHandler(
-            IMapper mapper,
-            TransferDbContext context)
+            IQueryRepository<TransferState> queryRepository,
+            IMapper mapper)
         {
-            _context = context;
+            _queryRepository = queryRepository;
             _mapper = mapper;
         }
 
         /// <summary>
-        /// Обработчик запроса списка банковских переводов.
+        /// Обработчик запроса списка активных банковских переводов.
         /// </summary>
-        public Task<List<TransferView>> Handle(GetTransactionsQuery request, CancellationToken cancellationToken)
-        {
-            return _context.TransferStates
-                .AsNoTracking()
-                // TODO: move to specification
-                .Where(t => t.CurrentState != "Final")
-                .ProjectTo<TransferView>(_mapper.ConfigurationProvider)
-                .ToListAsync(cancellationToken);
-        }
+        public async Task<List<TransferView>> Handle(GetTransactionsQuery request, CancellationToken cancellationToken)
+            => (await _queryRepository.ListAsync(new ActiveTransferSpec(), cancellationToken))
+                .PipeTo(_mapper.Map<List<TransferView>>);
 
-        public Task<TransferView> Handle(GetTransactionQuery request, CancellationToken cancellationToken)
-        {
-            return _context.TransferStates
-                .AsNoTracking()
-                // TODO: move to specification
-                .Where(t => t.CurrentState != "Final" && t.CorrelationId == request.Id)
-                .ProjectTo<TransferView>(_mapper.ConfigurationProvider)
-                .SingleOrDefault()
-                .PipeTo(Task.FromResult);
-        }
+        /// <summary>
+        /// Обработчик запроса детализации банковского перевода по идентификатору.
+        /// </summary>
+        public async Task<TransferView> Handle(GetTransactionQuery request, CancellationToken cancellationToken)
+            => (await _queryRepository.FindByAsync(new ActiveTransferByIdSpec(request.Id), cancellationToken))
+                .PipeTo(_mapper.Map<TransferView>);
     }
 }

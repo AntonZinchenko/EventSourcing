@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transfer.Infrastructure", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankAccount.Contracts", "BankAccount.Contracts\BankAccount.Contracts.csproj", "{F3D5CD10-2E16-44C6-B392-EDB1E338B59F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graphql.Types", "Transfer.Graphql\Graphql.Types.csproj", "{02D2B579-6C74-4FFE-B192-67232506AF5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graphql.Types", "Graphql.Types\Graphql.Types.csproj", "{02D2B579-6C74-4FFE-B192-67232506AF5E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{D6F50E3E-08DE-4940-A9C6-2584942D7ABE}"
 EndProject

@@ -26,6 +26,11 @@ namespace Transfer.Api.Controllers
             => (await _mediator.Send(new GetTransactionsQuery()))
                .Either(Ok, _ => (IActionResult)new NotFoundResult());
 
+        /// <summary>
+        /// Получить детализацию банковского перевода по идентификатору.
+        /// </summary>
+        /// <param name="id">Идентификатор банковского счета.</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
             => (await _mediator.Send(new GetTransactionQuery(id)))

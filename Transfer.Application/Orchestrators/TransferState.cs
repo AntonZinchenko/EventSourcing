@@ -1,7 +1,7 @@
 ﻿using Automatonymous;
 using System;
 
-namespace Transfer.Storage
+namespace Transfer.Application.Orchestrators
 {
     public class TransferState : SagaStateMachineInstance
     {

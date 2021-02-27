@@ -1,16 +1,12 @@
-﻿using BankAccount.Application.Commands;
-using BankAccount.Application.Processing;
+﻿using BankAccount.Application.Processing;
 using BankAccount.MaterializedView.Projections;
 using BankAccount.Storage;
 using Marten;
 using MediatR;
-using MediatR.Extensions.FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SeedWorks;
 using SeedWorks.Core.Storage;
-using System;
-using System.Reflection;
 
 namespace BankAccount.Application
 {
@@ -18,7 +14,7 @@ namespace BankAccount.Application
     {
         public static void ConfigApplication(this IServiceCollection services, IConfiguration config)
         {
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(SagaLoggingBehavior<,>));
             services.AddMarten(config, options => ConfigureMarten(options));
 
             services.AddScoped<IRepository<DomainModel.BankAccount>, MartenRepository<DomainModel.BankAccount>>();

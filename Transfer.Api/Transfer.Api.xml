@@ -16,6 +16,13 @@
             Получить список активных транзакций.
             </summary>
         </member>
+        <member name="M:Transfer.Api.Controllers.QueriesController.Get(System.Guid)">
+            <summary>
+            Получить детализацию банковского перевода по идентификатору.
+            </summary>
+            <param name="id">Идентификатор банковского счета.</param>
+            <returns></returns>
+        </member>
         <member name="M:Transfer.Api.CustomExtensionsMethods.AddCustomSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
             Конфигурирование Swagger.

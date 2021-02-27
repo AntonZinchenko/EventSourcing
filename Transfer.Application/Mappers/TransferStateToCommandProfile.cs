@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using Transfer.Application.Orchestrators;
 using Transfer.Contracts.Events;
 using Transfer.Contracts.Types;
-using Transfer.Storage;
 
 namespace Transfer.Application.Mappers
 {
@@ -20,7 +20,8 @@ namespace Transfer.Application.Mappers
                     src.CorrelationId));
 
             CreateMap<TransferState, TransferView>()
-                .ForMember(dto => dto.Id, conf => conf.MapFrom(ol => ol.CorrelationId));
+                .ForMember(dto => dto.Id, conf => conf.MapFrom(ol => ol.CorrelationId))
+                .ForMember(dto => dto.State, conf => conf.MapFrom(ol => ol.CurrentState));
         }
     }
 }

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="4.2.0" />
     <PackageReference Include="FluentValidation" Version="9.2.2" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.2.0" />
     <PackageReference Include="AutoMapper" Version="10.1.1" />
@@ -28,7 +29,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Transfer.Contracts\Transfer.Contracts.csproj" />
-    <ProjectReference Include="..\Transfer.Storage\Transfer.Storage.csproj" />
   </ItemGroup>
 
 </Project>

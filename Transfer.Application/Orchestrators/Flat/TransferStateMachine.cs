@@ -3,7 +3,6 @@ using Automatonymous;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
-using Transfer.Storage;
 using Transfer.Application.Interfaces;
 using Transfer.Contracts.Events;
 

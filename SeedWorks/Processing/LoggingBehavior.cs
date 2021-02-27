@@ -1,28 +1,23 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Transfer.Contracts.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using SeedWorks;
 using SeedWorks.Core.Events;
 
-namespace BankAccount.Application.Processing
+namespace SeedWorks.Processing
 {
     public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
-        private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger;
-        private readonly IExecutionContextAccessor _executionContextAccessor;
-        private readonly IEventBus _eventBus;
+        protected readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger;
+        protected readonly IExecutionContextAccessor _executionContextAccessor;
 
         public LoggingBehavior(
             ILogger<LoggingBehavior<TRequest, TResponse>> logger,
-            IEventBus eventBus,
             IExecutionContextAccessor executionContextAccessor)
         {
             _logger = logger;
-            _eventBus = eventBus;
             _executionContextAccessor = executionContextAccessor;
         }
 
@@ -38,16 +33,15 @@ namespace BankAccount.Application.Processing
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"[{GetCorrelationId(request)}] {e.Message}");
-
-                if (request is ISagaRequest action)
-                {
-                    await _eventBus.Publish(new ActionFaulted(e.Message, action.CorrelationId, request.GetType().Name));
-                }
+                await HandleException(request, e);
 
                 throw;
             }
         }
+
+        protected virtual Task HandleException(TRequest request, Exception e)
+            => Task.CompletedTask
+                .Do(_ => _logger.LogError(e, $"[{GetCorrelationId(request)}] {e.Message}"));
 
         private Guid GetCorrelationId(TRequest request)
             => request switch

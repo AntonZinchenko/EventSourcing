@@ -29,6 +29,7 @@ namespace Transfer.Api
                 .AddOptions(Configuration)
                 .AddContextAccessor()
                 .InitHttpClients(Configuration)
+                .ConfigApplication()
                 .ConfigOrchestrators(Configuration);
         }
 

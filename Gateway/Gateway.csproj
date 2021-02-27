@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Transfer.Graphql\Graphql.Types.csproj" />
+    <ProjectReference Include="..\Graphql.Types\Graphql.Types.csproj" />
   </ItemGroup>
   
 </Project>

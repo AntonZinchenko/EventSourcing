@@ -1,50 +1,55 @@
 ﻿{
     "ReRoutes": [
         {
-            "DownstreamPathTemplate": "/api/customers",
+            "DownstreamPathTemplate": "/api/queries",
             "DownstreamScheme": "http",
-            // "DownstreamHost": "localhost",
-            // "DownstreamPort": 9001,
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
-                    "Port": 53242
+                    "Port": 59329
                 }
             ],
-            "UpstreamPathTemplate": "/customers",
+            "UpstreamPathTemplate": "/transfers",
             "UpstreamHttpMethod": [ "Get" ]
         },
         {
-            "DownstreamPathTemplate": "/api/customers/{id}",
-            "DownstreamScheme": "http",            
-            // "DownstreamHost": "localhost",
-            // "DownstreamPort": 9001,
+            "DownstreamPathTemplate": "/api/commands",
+            "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
-                    "Port": 53242
+                    "Port": 59329
                 }
             ],
-            "UpstreamPathTemplate": "/customers/{id}",
+            "UpstreamPathTemplate": "/transfers",
+            "UpstreamHttpMethod": [ "Post" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/queries",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 56014
+                }
+            ],
+            "UpstreamPathTemplate": "/accounts",
             "UpstreamHttpMethod": [ "Get" ]
         },
         {
-            "DownstreamPathTemplate": "/api/products",
+            "DownstreamPathTemplate": "/api/commands",
             "DownstreamScheme": "http",
-            // "DownstreamPort": 9002,
-            // "DownstreamHost": "localhost",
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
-                    "Port": 53243
+                    "Port": 56014
                 }
             ],
-            "UpstreamPathTemplate": "/api/products",
-            "UpstreamHttpMethod": [ "Get" ]
+            "UpstreamPathTemplate": "/accounts",
+            "UpstreamHttpMethod": [ "Post" ]
         }
     ],
     "GlobalConfiguration": {
-        "RequestIdKey": "OcRequestId",
-        "AdministrationPath": "/administration"
+        "BaseUrl": "http://localhost:64315"
     }
 }
