@@ -28,17 +28,17 @@ namespace Transfer.Application
         }
 
         /// <summary>
-        /// Обработчик запроса списка активных банковских переводов.
+        /// Обработчик запроса списка банковских переводов.
         /// </summary>
         public async Task<List<TransferView>> Handle(GetTransactionsQuery request, CancellationToken cancellationToken)
-            => (await _queryRepository.ListAsync(new ActiveTransferSpec(), cancellationToken))
+            => (await _queryRepository.ListAllAsync(cancellationToken))
                 .PipeTo(_mapper.Map<List<TransferView>>);
 
         /// <summary>
         /// Обработчик запроса детализации банковского перевода по идентификатору.
         /// </summary>
         public async Task<TransferView> Handle(GetTransactionQuery request, CancellationToken cancellationToken)
-            => (await _queryRepository.FindByAsync(new ActiveTransferByIdSpec(request.Id), cancellationToken))
+            => (await _queryRepository.FindByAsync(new GetByIdSpec(request.Id), cancellationToken))
                 .PipeTo(_mapper.Map<TransferView>);
     }
 }

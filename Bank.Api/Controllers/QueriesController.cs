@@ -30,9 +30,10 @@ namespace BankAccount.Api.Controllers
         /// Получить краткую информацию по расчетному счету.
         /// </summary>
         /// <param name="id">Идентификатор расчетного счета.</param>
-        [HttpGet("{id}/Info")]
-        public async Task<IActionResult> GetShortInfo(Guid id)
-            => (await _mediator.Send(new GetBankAccountShortInfoQuery(id)))
+        /// <param name="version">Версия агрегата расчетного счета.</param>
+        [HttpGet("{id}/{version}")]
+        public async Task<IActionResult> GetShortInfo(Guid id, int version = default)
+            => (await _mediator.Send(new GetBankAccountShortInfoQuery(id, version)))
                .Either(Ok, _ => (IActionResult)new NotFoundResult());
 
         /// <summary>

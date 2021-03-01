@@ -31,8 +31,8 @@ namespace Transfer.Api.Controllers
         /// <returns></returns>
         [HttpPost("Execute")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public async Task<IActionResult> ExecuteTransferCommand([FromBody] TransferRequest request)
-            => (await _mediator.Send(new TransferBetweenAccountsCommand(request.SourceAccountId, request.TargetAccountId, request.Sum, _contextAccessor.CorrelationId)))
+        public IActionResult ExecuteTransferCommand([FromBody] TransferRequest request)
+            => _mediator.Send(new TransferBetweenAccountsCommand(request.SourceAccountId, request.TargetAccountId, request.Sum, _contextAccessor.CorrelationId))
                 .PipeTo(_ => new AcceptedResult());
     }
 }

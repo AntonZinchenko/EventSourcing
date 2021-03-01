@@ -22,7 +22,7 @@ namespace Transfer.Infrastructure.HttpClients
 
             await this.PostAsync<PerformDepositeRequest, Unit>(
                 _httpClient,
-                $"/api/commands/{accountId}/performDeposite",
+                $"api/commands/{accountId}/performDeposite",
                 model,
                 correlationId);
         }
@@ -33,7 +33,7 @@ namespace Transfer.Infrastructure.HttpClients
 
             await this.PostAsync<PerformWithdrawalRequest, Unit>(
                 _httpClient,
-                $"/api/commands/{accountId}/performWithdrawal",
+                $"api/commands/{accountId}/performWithdrawal",
                 model,
                 correlationId);
         }

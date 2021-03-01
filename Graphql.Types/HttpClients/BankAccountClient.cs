@@ -17,6 +17,37 @@ namespace Graphql.Graphql.HttpClients
             _httpClient = httpClient;
         }
 
+        /// <summary>
+        /// Открыть расчетный счет.
+        /// </summary>
+        public async Task<BankAccountShortInfoView> Create(string owner)
+        {
+            var model = new CreateBankAccountRequest { Owner = owner };
+
+            return await this.PostAsync<CreateBankAccountRequest, BankAccountShortInfoView>(
+                _httpClient,
+                $"/api/commands",
+                model,
+                Guid.NewGuid());
+        }
+
+        /// <summary>
+        /// Сменить имя владельца расчетного счета.
+        /// </summary>
+        public async Task RenameOwner(Guid accountId, string newOwner)
+        {
+            var model = new ChangeOwnerRequest { NewOwner = newOwner };
+
+            await this.PatchAsync<ChangeOwnerRequest, Unit>(
+                _httpClient,
+                $"/api/commands/{accountId}/RenameOwner",
+                model,
+                Guid.NewGuid());
+        }
+
+        /// <summary>
+        /// Выполнить зачисление денежных средств.
+        /// </summary>
         public async Task ProcessDeposite(Guid accountId, decimal sum)
         {
             var model = new PerformDepositeRequest { Sum = sum };
@@ -28,6 +59,9 @@ namespace Graphql.Graphql.HttpClients
                 Guid.NewGuid());
         }
 
+        /// <summary>
+        /// Выполнить списание денежных средств. 
+        /// </summary>
         public async Task ProcessWithdrawal(Guid accountId, decimal sum)
         {
             var model = new PerformWithdrawalRequest { Sum = sum };
@@ -39,11 +73,17 @@ namespace Graphql.Graphql.HttpClients
                 Guid.NewGuid());
         }
 
-        public async Task<BankAccountShortInfoView> GetShortInfo(Guid accountId)
+        /// <summary>
+        /// Запросить краткую выписку по счету.
+        /// </summary>
+        public async Task<BankAccountShortInfoView> GetShortInfo(Guid accountId, int accountVersion = default)
             => await this.GetAsync<BankAccountShortInfoView>(
                 _httpClient,
-                $"/api/queries/{accountId}/Info");
+                $"/api/queries/{accountId}/{accountVersion}");
 
+        /// <summary>
+        /// Запросить полную выписку по счету.
+        /// </summary>
         public async Task<BankAccountDetailsView> GetDetailedInfo(Guid accountId)
             => await this.GetAsync<BankAccountDetailsView>(
                 _httpClient,

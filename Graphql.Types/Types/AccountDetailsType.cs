@@ -3,13 +3,13 @@ using HotChocolate.Types;
 
 namespace Gateway.Graphql.Types
 {
-    public class AccountType
-        : ObjectType<BankAccountShortInfoView>
+    public class AccountDetailsType
+        : ObjectType<BankAccountDetailsView>
     {
-        protected override void Configure(IObjectTypeDescriptor<BankAccountShortInfoView> descriptor)
+        protected override void Configure(IObjectTypeDescriptor<BankAccountDetailsView> descriptor)
         {
             descriptor.BindFieldsExplicitly()
-                .Name("BankAccount")
+                .Name("BankAccountDetails")
                 .Description("Выписка по расчетному счету.");
 
             descriptor.Field(t => t.Id)
@@ -23,6 +23,10 @@ namespace Gateway.Graphql.Types
             descriptor.Field(t => t.Balance)
                 .Type<NonNullType<DecimalType>>()
                 .Description("Текущий баланс.");
+
+            descriptor.Field(t => t.CashFlow)
+                .Type<NonNullType<ListType<CashFlowItemType>>>()
+                .Description("Движение денежных средств.");
 
         }
     }

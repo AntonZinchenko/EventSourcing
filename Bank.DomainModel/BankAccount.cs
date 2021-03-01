@@ -60,7 +60,7 @@ namespace BankAccount.DomainModel
         {
             CheckRules(new DepositeSumIsPositiveRule(sum));
 
-            DepositePerformed.Create(Id, correlationId, sum)
+            DepositePerformed.Create(Id, Version + 1, correlationId, sum)
                 .Do(Enqueue)
                 .Do(Apply);
         }
@@ -73,7 +73,7 @@ namespace BankAccount.DomainModel
         {
             CheckRules(new OwnerNameNotEmptyRule(newOwner));
 
-            OwnerChanged.Create(Id, correlationId, newOwner)
+            OwnerChanged.Create(Id, Version + 1, correlationId, newOwner)
                 .Do(Enqueue)
                 .Do(Apply);
         }
@@ -86,7 +86,7 @@ namespace BankAccount.DomainModel
         {
             CheckRules(new WithdrawalSumExceedsAccountBalanceRule(sum, Balance));
 
-            WithdrawalPerformed.Create(Id, correlationId, sum)
+            WithdrawalPerformed.Create(Id, Version + 1, correlationId, sum)
                 .Do(Enqueue)
                 .Do(Apply);
         }
@@ -99,6 +99,7 @@ namespace BankAccount.DomainModel
             Owner = @event.Owner;
             Balance = 0;
             LastModified = @event.Created;
+            Version = @event.AccountVersion;
         }
 
         public void Apply(DepositePerformed @event)
@@ -106,6 +107,7 @@ namespace BankAccount.DomainModel
             Id = @event.AccountId;
             Balance += @event.Sum;
             LastModified = @event.Created;
+            Version = @event.AccountVersion;
         }
 
         public void Apply(OwnerChanged @event)
@@ -113,6 +115,7 @@ namespace BankAccount.DomainModel
             Id = @event.AccountId;
             Owner = @event.NewOwner;
             LastModified = @event.Created;
+            Version = @event.AccountVersion;
         }
 
         public void Apply(WithdrawalPerformed @event)
@@ -120,6 +123,7 @@ namespace BankAccount.DomainModel
             Id = @event.AccountId;
             Balance -= @event.Sum;
             LastModified = @event.Created;
+            Version = @event.AccountVersion;
         }
 
         #endregion

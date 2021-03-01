@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Transfer.Storage.Migrations
 {
     [DbContext(typeof(TransferDbContext))]
-    [Migration("20210129182113_Initial")]
+    [Migration("20210129182117_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,11 +35,17 @@ namespace Transfer.Storage.Migrations
                     b.Property<Guid>("SourceAccountId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("SourceAccountVersion")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Sum")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("TargetAccountId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TargetAccountVersion")
+                        .HasColumnType("int");
 
                     b.HasKey("CorrelationId");
 

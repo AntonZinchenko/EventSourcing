@@ -10,6 +10,16 @@ namespace Graphql.Graphql.Interfaces
     public interface IBankAccountClient 
     {
         /// <summary>
+        /// Открыть расчетный счет.
+        /// </summary>
+        Task<BankAccountShortInfoView> Create(string owner);
+
+        /// <summary>
+        /// Сменить имя владельца расчетного счета.
+        /// </summary>
+        Task RenameOwner(Guid accountId, string newOwner);
+
+        /// <summary>
         /// Выполнить списание денежных средств. 
         /// </summary>
         Task ProcessWithdrawal(Guid accountId, decimal sum);
@@ -22,7 +32,7 @@ namespace Graphql.Graphql.Interfaces
         /// <summary>
         /// Запросить краткую выписку по счету.
         /// </summary>
-        Task<BankAccountShortInfoView> GetShortInfo(Guid accountId);
+        Task<BankAccountShortInfoView> GetShortInfo(Guid accountId, int accountVersion = default);
 
         /// <summary>
         /// Запросить полную выписку по счету.

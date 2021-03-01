@@ -9,8 +9,8 @@ namespace BankAccount.DomainModel.Events
     public class BankAccountCreated : BaseAccountEvent
     {
         [JsonConstructor]
-        public BankAccountCreated(Guid accountId, DateTime created, Guid correlationId, string owner)
-            : base(accountId, created, correlationId)
+        public BankAccountCreated(Guid accountId, int accountVersion, DateTime created, Guid correlationId, string owner)
+            : base(accountId, accountVersion, created, correlationId)
         {
             Owner = owner;
         }
@@ -21,6 +21,6 @@ namespace BankAccount.DomainModel.Events
         public string Owner { get; }
 
         public static BankAccountCreated Create(Guid correlationId, string owner)
-            => new BankAccountCreated(Guid.NewGuid(), DateTime.Now, correlationId, owner);
+            => new BankAccountCreated(Guid.NewGuid(), 1, DateTime.Now, correlationId, owner);
     }
 }

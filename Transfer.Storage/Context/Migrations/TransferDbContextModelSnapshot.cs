@@ -33,11 +33,17 @@ namespace Transfer.Storage.Migrations
                     b.Property<Guid>("SourceAccountId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("SourceAccountVersion")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Sum")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("TargetAccountId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TargetAccountVersion")
+                        .HasColumnType("int");
 
                     b.HasKey("CorrelationId");
 

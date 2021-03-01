@@ -7,7 +7,7 @@ namespace SeedWorks.Core.Storage
 {
     public interface IRepository<T> where T : IAggregate
     {
-        Task<T> Find(Guid id, CancellationToken cancellationToken);
+        Task<T> Find(Guid id, int version = default, CancellationToken cancellationToken = default);
 
         Task Add(T aggregate, CancellationToken cancellationToken);
 

@@ -17,7 +17,9 @@ namespace Transfer.Storage
 
             builder.Property(c => c.CurrentState).IsRequired();
             builder.Property(x => x.SourceAccountId);
+            builder.Property(x => x.SourceAccountVersion);
             builder.Property(x => x.TargetAccountId);
+            builder.Property(x => x.TargetAccountVersion);
             builder.Property(x => x.Sum);
             builder.Property(x => x.Comment);
         }

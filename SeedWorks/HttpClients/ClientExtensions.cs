@@ -8,10 +8,29 @@ namespace SeedWorks.HttpClients
 {
     public static class ClientExtensions
     {
-        public static async Task<TResponse> PostAsync<TRequest, TResponse>(
+        public static Task<TResponse> PostAsync<TRequest, TResponse>(
             this IClient client,
             HttpClient httpClient,
             string url,
+            TRequest model,
+            Guid correlationId,
+            CancellationToken cancellationToken = new CancellationToken()) 
+            => client.SendAsync<TRequest, TResponse>(httpClient, url, HttpMethod.Post, model, correlationId, cancellationToken);
+
+        public static Task<TResponse> PatchAsync<TRequest, TResponse>(
+            this IClient client,
+            HttpClient httpClient,
+            string url,
+            TRequest model,
+            Guid correlationId,
+            CancellationToken cancellationToken = new CancellationToken())
+            => client.SendAsync<TRequest, TResponse>(httpClient, url, HttpMethod.Patch, model, correlationId, cancellationToken);
+
+        public static async Task<TResponse> SendAsync<TRequest, TResponse>(
+            this IClient client,
+            HttpClient httpClient,
+            string url,
+            HttpMethod method,
             TRequest model,
             Guid correlationId,
             CancellationToken cancellationToken = new CancellationToken())
@@ -19,7 +38,7 @@ namespace SeedWorks.HttpClients
             var request = new HttpRequestMessage
             {
                 RequestUri = new Uri($"{httpClient.BaseAddress}{url}"),
-                Method = HttpMethod.Post,
+                Method = method,
                 Content = new ObjectContent<TRequest>(model, new JsonMediaTypeFormatter())
             };
 

@@ -21,9 +21,19 @@ namespace Transfer.Application.Orchestrators
         public Guid SourceAccountId { get; set; }
 
         /// <summary>
+        /// Версия счета с которого производится списание денежных средств.
+        /// </summary>
+        public int SourceAccountVersion { get; set; }
+
+        /// <summary>
         /// Идентификатор счета на который производится зачисление денежных средств.
         /// </summary>
         public Guid TargetAccountId { get; set; }
+
+        /// <summary>
+        /// Версия счета на который производится зачисление денежных средств.
+        /// </summary>
+        public int TargetAccountVersion { get; set; }
 
         /// <summary>
         /// Сумма перевода.

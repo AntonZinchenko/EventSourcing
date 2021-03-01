@@ -9,8 +9,8 @@ namespace Gateway.Graphql.Types
         protected override void Configure(IObjectTypeDescriptor<Query> descriptor)
         {
             descriptor.Field(t => t.GetTransactions())
-                .Name("getActiveTransactions")
-                .Description("Получить список активных транзакций.");
+                .Name("getTransactions")
+                .Description("Получить список транзакций.");
 
             descriptor.Field(t => t.GetTransaction(default))
                 .Name("getTransaction")

@@ -7,9 +7,10 @@ namespace BankAccount.DomainModel.Events
     public class BaseAccountEvent : IEvent
     {
         [JsonConstructor]
-        public BaseAccountEvent(Guid accountId, DateTime created, Guid correlationId)
+        public BaseAccountEvent(Guid accountId, int accountVersion, DateTime created, Guid correlationId)
         {
             AccountId = accountId;
+            AccountVersion = accountVersion;
             Created = created;
             CorrelationId = correlationId;
         }
@@ -18,6 +19,11 @@ namespace BankAccount.DomainModel.Events
         /// Идентификатор расчетного счета.
         /// </summary>
         public Guid AccountId { get; }
+
+        /// <summary>
+        /// Версия расчетного счета.
+        /// </summary>
+        public int AccountVersion { get; }
 
         /// <summary>
         /// Дата создания.

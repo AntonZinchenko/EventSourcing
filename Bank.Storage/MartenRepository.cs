@@ -31,7 +31,7 @@ namespace BankAccount.Storage
             _readModelSchema = options.Value.ReadModelSchema;
         }
 
-        public async Task<T> Find(Guid id, CancellationToken cancellationToken)
+        public async Task<T> Find(Guid id, int version = default, CancellationToken cancellationToken = default)
         {
             // загрузка агрегата из снимка модели чтения
             var entity = await _documentSession.LoadAsync<T>(id, token: cancellationToken);
@@ -39,7 +39,7 @@ namespace BankAccount.Storage
                 throw new EntityNotFoundException(id, typeof(T).Name);
 
             // начитка агрегата из журнала событий
-            return await _documentSession.Events.AggregateStreamAsync<T>(id, token: cancellationToken);
+            return await _documentSession.Events.AggregateStreamAsync<T>(id, version, token: cancellationToken);
         }
 
         public Task Add(T aggregate, CancellationToken cancellationToken)

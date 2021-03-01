@@ -11,8 +11,8 @@ namespace BankAccount.DomainModel.Events
     public class WithdrawalPerformed : BaseAccountEvent, ISagaEvent, IWithdrawalPerformed
     {
         [JsonConstructor]
-        public WithdrawalPerformed(Guid accountId, DateTime created, Guid correlationId, decimal sum)
-            : base(accountId, created, correlationId)
+        public WithdrawalPerformed(Guid accountId, int accountVersion, DateTime created, Guid correlationId, decimal sum)
+            : base(accountId, accountVersion, created, correlationId)
         {
             Sum = sum;
         }
@@ -22,7 +22,7 @@ namespace BankAccount.DomainModel.Events
         /// </summary>
         public decimal Sum { get; }
 
-        public static WithdrawalPerformed Create(Guid accountId, Guid correlationId, decimal sum)
-            => new WithdrawalPerformed(accountId, DateTime.Now, correlationId, sum);
+        public static WithdrawalPerformed Create(Guid accountId, int accountVersion, Guid correlationId, decimal sum)
+            => new WithdrawalPerformed(accountId, accountVersion, DateTime.Now, correlationId, sum);
     }
 }

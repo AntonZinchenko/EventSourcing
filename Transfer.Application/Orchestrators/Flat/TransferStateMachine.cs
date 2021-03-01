@@ -25,8 +25,12 @@ namespace Transfer.Application.Orchestrators.Flat
 
             Initially(
                 When(ExecuteTransferEvent)
-                    .Then(x => logger.LogInformation($"Банковский перевод со счета {x.Instance.SourceAccountId} на счет {x.Instance.TargetAccountId}."))
-                    .Then(InitStateMachine)
+                    .Then(x =>
+                    {
+                        logger.LogInformation($"Банковский перевод со счета {x.Instance.SourceAccountId} на счет {x.Instance.TargetAccountId}.");
+
+                        InitStateMachine(x);
+                    })
                     .TransitionTo(ReadyToStart)
                     .Publish(x => mapper.Map<StartProcessing>(x.Instance)));
 
@@ -40,23 +44,37 @@ namespace Transfer.Application.Orchestrators.Flat
                     .Then(x => logger.LogInformation($"Отмена списания денежных средств со счета {x.Instance.SourceAccountId}."))
                     .ThenAsync(RollbackWithdrawal),
                 When(WithdrawalCompletedEvent)
-                    .Then(x => logger.LogInformation($"Выполнено успешное списание денежных средств в размере {x.Instance.Sum} со счета {x.Instance.SourceAccountId}."))
+                    .Then(x =>
+                    {
+                        logger.LogInformation($"Выполнено успешное списание денежных средств в размере {x.Instance.Sum} со счета {x.Instance.SourceAccountId}.");
+
+                        x.Instance.SourceAccountVersion = x.Data.AccountVersion;
+                    })
                     .TransitionTo(PendingDepositeFinalization)
                     .ThenAsync(ProcessInFlowOperation));
 
             During(PendingDepositeFinalization,
                 When(DepositeCompletedEvent)
-                     .Then(x => logger.LogInformation($"Выполнено успешное зачисление денежных средств в размере {x.Instance.Sum} на счет {x.Instance.TargetAccountId}."))
-                     .Then(x => x.Instance.Comment = "Transaction completed successfully.")
+                     .Then(x =>
+                     {
+                         logger.LogInformation($"Выполнено успешное зачисление денежных средств в размере {x.Instance.Sum} на счет {x.Instance.TargetAccountId}.");
+
+                         x.Instance.Comment = "Transaction completed successfully.";
+                         x.Instance.TargetAccountVersion = x.Data.AccountVersion;
+                     })
                      .TransitionTo(Completed)
                      .Finalize());
 
             DuringAny(
                 When(OperationFaultedEvent)
-                     .Then(x => logger.LogInformation($"Перевод денежных средств со счета {x.Instance.SourceAccountId} на счет {x.Instance.TargetAccountId} закончился неудачей! Причина: [{DateTime.Now}] {x.Data.Reason}."))
-                     .ThenAsync(NotifyMonitoringService)
-                     .Then(x => x.Instance.Comment = x.Data.Reason)
-                     .TransitionTo(Faulted));
+                     .Then(x =>
+                     {
+                         logger.LogInformation($"Перевод денежных средств со счета {x.Instance.SourceAccountId} на счет {x.Instance.TargetAccountId} закончился неудачей! Причина: [{DateTime.Now}] {x.Data.Reason}.");
+
+                         x.Instance.Comment = x.Data.Reason;
+                     })
+                    .ThenAsync(NotifyMonitoringService)
+                    .TransitionTo(Faulted));
         }
 
         /// <summary>

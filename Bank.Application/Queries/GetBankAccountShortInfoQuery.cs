@@ -10,15 +10,21 @@ namespace BankAccount.Application.Queries
     /// </summary>
     public class GetBankAccountShortInfoQuery : IRequest<BankAccountShortInfoView>
     {
-        public GetBankAccountShortInfoQuery(Guid accountId)
+        public GetBankAccountShortInfoQuery(Guid accountId, int accountVersion = default)
         {
             AccountId = accountId;
+            AccountVersion = accountVersion;
         }
 
         /// <summary>
         /// Идентификатор расчетного счета.
         /// </summary>
         public Guid AccountId { get; }
+
+        /// <summary>
+        /// Версия агрегата расчетного счета.
+        /// </summary>
+        public int AccountVersion { get; }
     }
 
     public class GetBankAccountShortInfoValidator : AbstractValidator<GetBankAccountShortInfoQuery>

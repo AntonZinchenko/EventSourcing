@@ -31,15 +31,19 @@ namespace Gateway.Graphql.Types
 
             descriptor.Field("SourceAccount")
                 .Type<NonNullType<AccountType>>()
-                .Resolver(ctx => ctx.Parent<TransferView>().SourceAccountId
-                    .PipeTo(accountId => _accountClient.GetDetailedInfo(accountId)))
+                .Resolver(ctx => ctx.Parent<TransferView>()
+                    .PipeTo(acc => _accountClient.GetShortInfo(acc.SourceAccountId, acc.SourceAccountVersion)))
                 .Description("Банковский счет с которого производится списание денежных средств.");
 
             descriptor.Field("TargetAccount")
                 .Type<NonNullType<AccountType>>()
-                .Resolver(ctx => ctx.Parent<TransferView>().TargetAccountId
-                    .PipeTo(accountId => _accountClient.GetDetailedInfo(accountId)))
+                .Resolver(ctx => ctx.Parent<TransferView>()
+                    .PipeTo(acc => _accountClient.GetShortInfo(acc.TargetAccountId, acc.TargetAccountVersion)))
                 .Description("Банковский счет на который производится зачисление денежных средств.");
+
+            descriptor.Field(t => t.Comment)
+                .Type<NonNullType<StringType>>()
+                .Description("Комментарий.");
         }
     }
 }

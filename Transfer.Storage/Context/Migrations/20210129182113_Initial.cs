@@ -14,7 +14,9 @@ namespace Transfer.Storage.Migrations
                     TransferId = table.Column<Guid>(nullable: false),
                     CurrentState = table.Column<string>(nullable: false),
                     SourceAccountId = table.Column<Guid>(nullable: false),
+                    SourceAccountVersion = table.Column<int>(nullable: false),
                     TargetAccountId = table.Column<Guid>(nullable: false),
+                    TargetAccountVersion = table.Column<int>(nullable: false),
                     Sum = table.Column<decimal>(nullable: false),
                     Comment = table.Column<string>(nullable: true)
                 },

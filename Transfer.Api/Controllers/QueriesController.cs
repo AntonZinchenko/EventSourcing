@@ -19,7 +19,7 @@ namespace Transfer.Api.Controllers
         }
 
         /// <summary>
-        /// Получить список активных транзакций.
+        /// Получить список транзакций.
         /// </summary>
         [HttpGet()]
         public async Task<IActionResult> Get()

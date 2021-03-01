@@ -71,7 +71,7 @@ namespace BankAccount.Application
                 }, cancellationToken).ContinueWith(_ => Unit.Value, TaskContinuationOptions.OnlyOnRanToCompletion);
 
         private async Task<Unit> TransformEntity(Guid accountId, Action<DomainModel.BankAccount> processEvent, CancellationToken cancellationToken)
-            => (await _repository.Find(accountId, cancellationToken))
+            => (await _repository.Find(accountId, cancellationToken: cancellationToken))
                 .Do(bankAccount => processEvent(bankAccount))
                 .Do(bankAccount => _repository.Update(bankAccount, cancellationToken).Wait())
                 .PipeTo(_ => Unit.Value);

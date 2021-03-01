@@ -11,14 +11,19 @@ namespace Gateway.Graphql
         {
             services
                 .AddInMemorySubscriptions()
-              //  .AddGraphQLSubscriptions()
                 .AddGraphQL(
                     SchemaBuilder.New()
                         .AddQueryType<QueryType>()
                         .AddType<TransactionType>()
                         .AddType<AccountType>()
+                        .AddType<AccountDetailsType>()
                         .AddMutationType<MutationType>()
                         .AddType<ExecuteTransferInput>()
+                        .AddType<CreateBankAccountInput>()
+                        .AddType<ProcessDepositeInput>()
+                        .AddType<ProcessWithdrawalInput>()
+                        .AddType<RenameOwnerInput>()
+                        .AddType<CashFlowItemType>()
                         .AddSubscriptionType(d => d.Name("Subscription"))
                         .AddType<SubscriptionType>()
                         .BindClrType<string, StringType>());
