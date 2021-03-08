@@ -13,7 +13,7 @@
         </member>
         <member name="M:Transfer.Api.Controllers.QueriesController.Get">
             <summary>
-            Получить список активных транзакций.
+            Получить список транзакций.
             </summary>
         </member>
         <member name="M:Transfer.Api.Controllers.QueriesController.Get(System.Guid)">

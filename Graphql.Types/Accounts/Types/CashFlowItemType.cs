@@ -1,7 +1,7 @@
 ﻿using BankAccount.Contracts.Views;
 using HotChocolate.Types;
 
-namespace Gateway.Graphql.Types
+namespace Graphql.Types.Accounts.Types
 {
     public class CashFlowItemType
         : ObjectType<CashFlowItem>

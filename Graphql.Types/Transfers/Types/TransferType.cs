@@ -1,16 +1,18 @@
 ﻿using Graphql.Graphql.Interfaces;
+using Graphql.Types.Accounts.Types;
 using HotChocolate.Types;
 using SeedWorks;
+using System.Threading;
 using Transfer.Contracts.Types;
 
-namespace Gateway.Graphql.Types
+namespace Graphql.Types.Transfers.Types
 {
-    public class TransactionType
+    public class TransferType
         : ObjectType<TransferView>
     {
         private readonly IBankAccountClient _accountClient;
 
-        public TransactionType(IBankAccountClient accountClient)
+        public TransferType(IBankAccountClient accountClient)
         {
             _accountClient = accountClient;
         }
@@ -32,13 +34,13 @@ namespace Gateway.Graphql.Types
             descriptor.Field("SourceAccount")
                 .Type<NonNullType<AccountType>>()
                 .Resolver(ctx => ctx.Parent<TransferView>()
-                    .PipeTo(acc => _accountClient.GetShortInfo(acc.SourceAccountId, acc.SourceAccountVersion)))
+                    .PipeTo(acc => _accountClient.GetBankAccountByIdAsync(acc.SourceAccountId, acc.SourceAccountVersion, CancellationToken.None)))
                 .Description("Банковский счет с которого производится списание денежных средств.");
 
             descriptor.Field("TargetAccount")
                 .Type<NonNullType<AccountType>>()
                 .Resolver(ctx => ctx.Parent<TransferView>()
-                    .PipeTo(acc => _accountClient.GetShortInfo(acc.TargetAccountId, acc.TargetAccountVersion)))
+                    .PipeTo(acc => _accountClient.GetBankAccountByIdAsync(acc.TargetAccountId, acc.TargetAccountVersion, CancellationToken.None)))
                 .Description("Банковский счет на который производится зачисление денежных средств.");
 
             descriptor.Field(t => t.Comment)

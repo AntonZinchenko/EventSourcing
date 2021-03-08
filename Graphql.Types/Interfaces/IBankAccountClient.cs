@@ -1,5 +1,6 @@
 ﻿using BankAccount.Contracts.Views;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Graphql.Graphql.Interfaces
@@ -12,31 +13,31 @@ namespace Graphql.Graphql.Interfaces
         /// <summary>
         /// Открыть расчетный счет.
         /// </summary>
-        Task<BankAccountShortInfoView> Create(string owner);
+        Task<BankAccountShortInfoView> CreateAsync(string owner, CancellationToken cancellationToken);
 
         /// <summary>
         /// Сменить имя владельца расчетного счета.
         /// </summary>
-        Task RenameOwner(Guid accountId, string newOwner);
+        Task RenameOwnerAsync(Guid accountId, string newOwner, CancellationToken cancellationToken);
 
         /// <summary>
         /// Выполнить списание денежных средств. 
         /// </summary>
-        Task ProcessWithdrawal(Guid accountId, decimal sum);
+        Task ProcessWithdrawalAsync(Guid accountId, decimal sum, CancellationToken cancellationToken);
 
         /// <summary>
         /// Выполнить зачисление денежных средств.
         /// </summary>
-        Task ProcessDeposite(Guid accountId, decimal sum);
+        Task ProcessDepositeAsync(Guid accountId, decimal sum, CancellationToken cancellationToken);
 
         /// <summary>
         /// Запросить краткую выписку по счету.
         /// </summary>
-        Task<BankAccountShortInfoView> GetShortInfo(Guid accountId, int accountVersion = default);
+        Task<BankAccountShortInfoView> GetBankAccountByIdAsync(Guid accountId, int accountVersion, CancellationToken cancellationToken);
 
         /// <summary>
         /// Запросить полную выписку по счету.
         /// </summary>
-        Task<BankAccountDetailsView> GetDetailedInfo(Guid accountId);
+        Task<BankAccountDetailsView> GetBankAccountDetailsByIdAsync(Guid accountId, CancellationToken cancellationToken);
     }
 }

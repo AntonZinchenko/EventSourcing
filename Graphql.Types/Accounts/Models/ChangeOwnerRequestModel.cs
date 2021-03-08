@@ -1,7 +1,7 @@
 ﻿using BankAccount.Contracts.Requests;
 using System;
 
-namespace Gateway.Graphql.Models
+namespace Graphql.Types.Accounts.Types.Models
 {
     public class ChangeOwnerRequestModel: ChangeOwnerRequest
     {

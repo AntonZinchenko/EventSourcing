@@ -1,7 +1,7 @@
 ﻿using HotChocolate.Types;
 using Transfer.Contracts.Requests;
 
-namespace Gateway.Graphql.Types
+namespace Graphql.Types.Transfers.Types
 {
     public class ExecuteTransferInput
         : InputObjectType<TransferRequest>

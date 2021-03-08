@@ -1,7 +1,7 @@
-﻿using Gateway.Graphql.Models;
+﻿using Graphql.Types.Accounts.Types.Models;
 using HotChocolate.Types;
 
-namespace Gateway.Graphql.Types
+namespace Graphql.Types.Accounts.Types
 {
     public class ProcessWithdrawalInput
         : InputObjectType<PerformWithdrawalRequestModel>

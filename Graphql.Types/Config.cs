@@ -1,7 +1,10 @@
 ﻿using HotChocolate;
-using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
-using Gateway.Graphql.Types;
+using Graphql.Types.Loaders;
+using Graphql.Types.Accounts;
+using Graphql.Types.Transfers;
+using Graphql.Types.Accounts.Types;
+using Graphql.Types.Transfers.Types;
 
 namespace Gateway.Graphql
 {
@@ -10,23 +13,26 @@ namespace Gateway.Graphql
         public static IServiceCollection RegistergGraphqlTypes(this IServiceCollection services)
         {
             services
-                .AddInMemorySubscriptions()
-                .AddGraphQL(
-                    SchemaBuilder.New()
-                        .AddQueryType<QueryType>()
-                        .AddType<TransactionType>()
+                .AddGraphQLServer()
+                .AddQueryType(d => d.Name("Query"))
+                    .AddTypeExtension<AccountQueries>()
                         .AddType<AccountType>()
                         .AddType<AccountDetailsType>()
-                        .AddMutationType<MutationType>()
-                        .AddType<ExecuteTransferInput>()
+                        .AddType<CashFlowItemType>()
+                    .AddTypeExtension<TransferQueries>()
+                        .AddType<TransferType>()
+                .AddMutationType(d => d.Name("Mutation"))
+                    .AddTypeExtension<AccountMutations>()
                         .AddType<CreateBankAccountInput>()
                         .AddType<ProcessDepositeInput>()
                         .AddType<ProcessWithdrawalInput>()
                         .AddType<RenameOwnerInput>()
-                        .AddType<CashFlowItemType>()
-                        .AddSubscriptionType(d => d.Name("Subscription"))
-                        .AddType<SubscriptionType>()
-                        .BindClrType<string, StringType>());
+                    .AddTypeExtension<TransferMutations>()
+                        .AddType<ExecuteTransferInput>()
+               .AddSubscriptionType(d => d.Name("Subscription"))
+                    .AddTypeExtension<TransferSubscriptions>()
+               .AddDataLoader<BankAccountByIdDataLoader>()
+               .AddDataLoader<TransactionByIdDataLoader>();
 
             return services;
         }

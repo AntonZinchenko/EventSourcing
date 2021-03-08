@@ -5,11 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate.AspNetCore" Version="10.4.0-preview.11" />
-    <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.3.6" />
-    <PackageReference Include="HotChocolate.Types.Filters" Version="10.4.0-preview.11" />
-    <PackageReference Include="HotChocolate.Types.Sorting" Version="10.4.0-preview.11" />
-    <PackageReference Include="HotChocolate.Subscriptions.InMemory" Version="10.4.0-preview.11" />
+    <PackageReference Include="GreenDonut" Version="11.0.9" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.9" />
+    <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.5.5" />
+    <PackageReference Include="HotChocolate.Types" Version="11.0.9" />
+    <PackageReference Include="HotChocolate.Types.Filters" Version="11.0.9" />
+    <PackageReference Include="HotChocolate.Types.Sorting" Version="11.0.9" />
+    <PackageReference Include="HotChocolate.Subscriptions.InMemory" Version="11.0.9" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Transfer.Contracts.Types;
 using Transfer.Contracts.Requests;
 using Graphql.Graphql.Interfaces;
+using System.Threading;
 
 namespace Graphql.Graphql.HttpClients
 {
@@ -17,17 +18,19 @@ namespace Graphql.Graphql.HttpClients
             _httpClient = httpClient;
         }
 
-        public async Task<List<TransferView>> GetActiveTranfers()
+        public async Task<List<TransferView>> GetTranfersAsync(CancellationToken cancellationToken)
             => await this.GetAsync<List<TransferView>>(
                 _httpClient,
-                "/api/queries");
+                "/api/queries",
+                cancellationToken);
 
-        public async Task<TransferView> GetTranferInfo(Guid id)
+        public async Task<TransferView> GetTranferByIdAsync(Guid id, CancellationToken cancellationToken)
             => await this.GetAsync<TransferView>(
                 _httpClient,
-                $"/api/queries/{id}");
+                $"/api/queries/{id}",
+                cancellationToken);
 
-        public async Task<Guid> ExecuteTransfer(Guid sourceAccountId, Guid targetAccountId, decimal sum)
+        public async Task<Guid> ExecuteTransferAsync(Guid sourceAccountId, Guid targetAccountId, decimal sum, CancellationToken cancellationToken)
         {
             var model = new TransferRequest 
             {
@@ -40,7 +43,8 @@ namespace Graphql.Graphql.HttpClients
                 _httpClient,
                 "/api/commands/execute",
                 model,
-                Guid.NewGuid());
+                Guid.NewGuid(),
+                cancellationToken);
         }
     }
 }

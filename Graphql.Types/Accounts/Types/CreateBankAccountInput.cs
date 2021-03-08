@@ -1,7 +1,7 @@
 ﻿using BankAccount.Contracts.Requests;
 using HotChocolate.Types;
 
-namespace Gateway.Graphql.Types
+namespace Graphql.Types.Accounts.Types
 {
     public class CreateBankAccountInput
         : InputObjectType<CreateBankAccountRequest>

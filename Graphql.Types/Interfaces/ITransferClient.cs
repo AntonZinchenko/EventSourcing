@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Transfer.Contracts.Types;
 
@@ -11,15 +12,18 @@ namespace Graphql.Graphql.Interfaces
     public interface ITransferClient
     {
         /// <summary>
-        /// Получить список активных транзакций.
+        /// Получить список транзакций.
         /// </summary>
-        Task<List<TransferView>> GetActiveTranfers();
+        Task<List<TransferView>> GetTranfersAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Получить детализацию транзакции по Id.
+        /// </summary>
+        Task<TransferView> GetTranferByIdAsync(Guid id, CancellationToken cancellationToken);
 
         /// <summary>
         /// Выполнить денежный перевод между счетами.
         /// </summary>
-        Task<Guid> ExecuteTransfer(Guid sourceAccountId, Guid targetAccountId, decimal sum);
-
-        Task<TransferView> GetTranferInfo(Guid id);
+        Task<Guid> ExecuteTransferAsync(Guid sourceAccountId, Guid targetAccountId, decimal sum, CancellationToken cancellationToken);
     }
 }

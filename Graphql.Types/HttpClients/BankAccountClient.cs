@@ -5,6 +5,7 @@ using MediatR;
 using SeedWorks.HttpClients;
 using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Graphql.Graphql.HttpClients
@@ -20,7 +21,7 @@ namespace Graphql.Graphql.HttpClients
         /// <summary>
         /// Открыть расчетный счет.
         /// </summary>
-        public async Task<BankAccountShortInfoView> Create(string owner)
+        public async Task<BankAccountShortInfoView> CreateAsync(string owner, CancellationToken cancellationToken)
         {
             var model = new CreateBankAccountRequest { Owner = owner };
 
@@ -28,13 +29,14 @@ namespace Graphql.Graphql.HttpClients
                 _httpClient,
                 $"/api/commands",
                 model,
-                Guid.NewGuid());
+                Guid.NewGuid(),
+                cancellationToken);
         }
 
         /// <summary>
         /// Сменить имя владельца расчетного счета.
         /// </summary>
-        public async Task RenameOwner(Guid accountId, string newOwner)
+        public async Task RenameOwnerAsync(Guid accountId, string newOwner, CancellationToken cancellationToken)
         {
             var model = new ChangeOwnerRequest { NewOwner = newOwner };
 
@@ -42,13 +44,14 @@ namespace Graphql.Graphql.HttpClients
                 _httpClient,
                 $"/api/commands/{accountId}/RenameOwner",
                 model,
-                Guid.NewGuid());
+                Guid.NewGuid(),
+                cancellationToken);
         }
 
         /// <summary>
         /// Выполнить зачисление денежных средств.
         /// </summary>
-        public async Task ProcessDeposite(Guid accountId, decimal sum)
+        public async Task ProcessDepositeAsync(Guid accountId, decimal sum, CancellationToken cancellationToken)
         {
             var model = new PerformDepositeRequest { Sum = sum };
 
@@ -56,13 +59,14 @@ namespace Graphql.Graphql.HttpClients
                 _httpClient,
                 $"/api/commands/{accountId}/performDeposite",
                 model,
-                Guid.NewGuid());
+                Guid.NewGuid(),
+                cancellationToken);
         }
 
         /// <summary>
         /// Выполнить списание денежных средств. 
         /// </summary>
-        public async Task ProcessWithdrawal(Guid accountId, decimal sum)
+        public async Task ProcessWithdrawalAsync(Guid accountId, decimal sum, CancellationToken cancellationToken)
         {
             var model = new PerformWithdrawalRequest { Sum = sum };
 
@@ -70,24 +74,27 @@ namespace Graphql.Graphql.HttpClients
                 _httpClient,
                 $"/api/commands/{accountId}/performWithdrawal",
                 model,
-                Guid.NewGuid());
+                Guid.NewGuid(),
+                cancellationToken);
         }
 
         /// <summary>
         /// Запросить краткую выписку по счету.
         /// </summary>
-        public async Task<BankAccountShortInfoView> GetShortInfo(Guid accountId, int accountVersion = default)
+        public async Task<BankAccountShortInfoView> GetBankAccountByIdAsync(Guid accountId, int accountVersion, CancellationToken cancellationToken)
             => await this.GetAsync<BankAccountShortInfoView>(
                 _httpClient,
-                $"/api/queries/{accountId}/{accountVersion}");
+                $"/api/queries/{accountId}/{accountVersion}",
+                cancellationToken);
 
         /// <summary>
         /// Запросить полную выписку по счету.
         /// </summary>
-        public async Task<BankAccountDetailsView> GetDetailedInfo(Guid accountId)
+        public async Task<BankAccountDetailsView> GetBankAccountDetailsByIdAsync(Guid accountId, CancellationToken cancellationToken)
             => await this.GetAsync<BankAccountDetailsView>(
                 _httpClient,
-                $"/api/queries/{accountId}/Details");
+                $"/api/queries/{accountId}/Details",
+                cancellationToken);
         
     }
 }

@@ -1,9 +1,9 @@
 ﻿using BankAccount.Contracts.Requests;
 using System;
 
-namespace Gateway.Graphql.Models
+namespace Graphql.Types.Accounts.Types.Models
 {
-    public class PerformDepositeRequestModel: PerformDepositeRequest
+    public class PerformWithdrawalRequestModel: PerformWithdrawalRequest
     {
         /// <summary>
         /// Идентификатор расчетного счета.
