@@ -8,9 +8,9 @@ using Transfer.Contracts.Events;
 
 namespace Transfer.Application.Orchestrators.RoutingSlip
 {
-    public class ProcessTransferJobConsumer : IConsumer<ExecuteActivities>
+    public class ProcessTransferJobConsumer : IConsumer<ISumTransferStarted>
     {
-        public async Task Consume(ConsumeContext<ExecuteActivities> context)
+        public async Task Consume(ConsumeContext<ISumTransferStarted> context)
         {
             // Инициация RoutingSlip
             var builder = new RoutingSlipBuilder(NewId.NextGuid());

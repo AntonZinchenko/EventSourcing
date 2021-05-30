@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SeedWorks.HttpClients;
 using System;
 
-namespace Gateway
+namespace Graphql.Api
 {
     public static class CustomExtensionsMethods
     {

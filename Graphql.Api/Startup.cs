@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Gateway.Graphql;
 using HotChocolate.AspNetCore;
 
-namespace Gateway
+namespace Graphql.Api
 {
     public class Startup
     {
